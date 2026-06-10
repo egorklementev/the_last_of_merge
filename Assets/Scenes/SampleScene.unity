@@ -7871,7 +7871,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 720, y: 1280}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.6
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -7928,6 +7928,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 279687634}
     m_Modifications:
+    - target: {fileID: 196224497533987331, guid: c5cd1098d5592274491802c6715ecc4b, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 2126615842}
+    - target: {fileID: 196224497533987331, guid: c5cd1098d5592274491802c6715ecc4b, type: 3}
+      propertyPath: dragSmoothTime
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 429525881793634408, guid: c5cd1098d5592274491802c6715ecc4b, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

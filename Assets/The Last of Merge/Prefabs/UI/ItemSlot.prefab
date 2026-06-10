@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 7990339187460699913}
   - component: {fileID: 3263927356942773007}
   - component: {fileID: 6096813292947504737}
+  - component: {fileID: 196224497533987331}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -135,6 +136,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.AspectRatioFitter
   m_AspectMode: 3
   m_AspectRatio: 1
+--- !u!114 &196224497533987331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5626719851137152075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39cec9745c4699f4b926445b46fcd961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSlotView
+  dragSmoothTime: 0.1
 --- !u!1 &6706833672451902921
 GameObject:
   m_ObjectHideFlags: 0
