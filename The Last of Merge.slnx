@@ -7,4 +7,5 @@
   <Project Path="UniTask.TextMeshPro.csproj" />
   <Project Path="UniTask.Editor.csproj" />
   <Project Path="UniTask.DOTween.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
 </Solution>
