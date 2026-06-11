@@ -2,6 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Zenject;
 
 [RequireComponent(typeof(Image))]
 [RequireComponent(typeof(RectTransform))]
@@ -11,8 +12,8 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     [Range(0f, 1f)]
     private float dragSmoothTime = 0.1f;
 
-    [SerializeField]
-    private Canvas canvas; // TODO: inject this
+    [Inject(Id = "main_canvas")]
+    private Canvas canvas;
 
     private RectTransform rectTransform;
     private Vector2 dragStartPosition;
@@ -52,7 +53,7 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         Vector2 screenDelta = eventData.position - clickStartPosition;
         Vector2 canvasDelta = screenDelta / canvas.scaleFactor;
         //rectTransform.anchoredPosition = dragStartPosition + canvasDelta;
-        dragTween.Kill();
+        dragTween.Complete();
         dragTween = rectTransform.DOAnchorPos(dragStartPosition + canvasDelta, dragSmoothTime);
     }
 
@@ -74,7 +75,7 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             return;
 
         state = ItemSlotState.RELEASED;
-        dragTween.Kill();
+        dragTween.Complete();
 
         itemIcon.material.renderQueue -= 1;
     }
