@@ -19,6 +19,7 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     private Vector2 dragStartPosition;
     private Vector2 clickStartPosition;
     private ItemSlotState state = ItemSlotState.RESTING;
+    private CanvasGroup itemIconCanvasGroup;
     private Tween dragTween;
     private Image itemIcon;
 
@@ -26,8 +27,13 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     {
         rectTransform = GetComponent<RectTransform>();
         itemIcon = GetComponent<Image>();
+        itemIconCanvasGroup = GetComponent<CanvasGroup>();
 
         itemIcon.material = new Material(itemIcon.material);
+
+        // DEBUG
+        SetItem(Random.value < .333f);
+        // DEBUG
     }
 
     void Update()
@@ -39,20 +45,38 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             case ItemSlotState.DRAGGING:
                 break;
             case ItemSlotState.RELEASED:
-                state = ItemSlotState.SNAPPING;
                 // TODO: make needed calculations here (checks)
+                //
+                // if (okay to merge)
+                // state = ItemSlotState.MERGING;
+                ShowMergingVisuals();
+                // else
+                state = ItemSlotState.MERGING;
+                // SnapToSlot();
                 break;
             case ItemSlotState.SNAPPING:
                 state = ItemSlotState.RESTING; // TODO: wait for the snap animation and then change the state
                 break;
+            case ItemSlotState.MERGING:
+                state = ItemSlotState.RESTING; // TODO: wait for the merge animation and then change the state
+                SetItem(false);
+                break;
+            case ItemSlotState.HOVERED:
+                break;
         }
+    }
+
+    public void SetItem(bool hasItem)
+    {
+        itemIconCanvasGroup.alpha = hasItem ? 1f : 0f;
+        itemIconCanvasGroup.interactable = hasItem;
+        itemIconCanvasGroup.blocksRaycasts = hasItem;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         Vector2 screenDelta = eventData.position - clickStartPosition;
         Vector2 canvasDelta = screenDelta / canvas.scaleFactor;
-        //rectTransform.anchoredPosition = dragStartPosition + canvasDelta;
         dragTween.Complete();
         dragTween = rectTransform.DOAnchorPos(dragStartPosition + canvasDelta, dragSmoothTime);
     }
@@ -63,10 +87,11 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             return;
 
         state = ItemSlotState.DRAGGING;
+
         dragStartPosition = rectTransform.anchoredPosition;
         clickStartPosition = eventData.position;
 
-        itemIcon.materialForRendering.renderQueue += 1;
+        ShowDraggingVisuals();
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -76,8 +101,18 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
 
         state = ItemSlotState.RELEASED;
         dragTween.Complete();
+    }
 
+    private void ShowDraggingVisuals()
+    {
+        itemIcon.materialForRendering.renderQueue += 1;
+        itemIcon.DOColor(Color.deepPink, .5f);
+    }
+
+    private void ShowMergingVisuals()
+    {
         itemIcon.material.renderQueue -= 1;
+        itemIcon.DOColor(Color.white, .5f);
     }
 
     public enum ItemSlotState
@@ -87,5 +122,6 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         DRAGGING,
         RELEASED,
         SNAPPING,
+        MERGING,
     }
 }
