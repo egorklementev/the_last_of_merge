@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,18 +12,30 @@ public class ItemSlotView
         IBeginDragHandler,
         IEndDragHandler,
         IDragHandler,
+        IPointerEnterHandler,
+        IPointerExitHandler,
         IItemSlotView
 {
+    public event Action Moved;
+
     [SerializeField]
     [Range(0f, 1f)]
     private float dragSmoothTime = 0.1f;
 
-    [field: SerializeField]
-    public int Id { get; set; } = -1;
+    public int Id
+    {
+        get => id;
+        set
+        {
+            id = value;
+            data.SlotId = id;
+        }
+    }
 
     [Inject(Id = "main_canvas")]
     private Canvas canvas;
 
+    private int id = -1;
     private RectTransform rectTransform;
     private Vector2 dragStartPosition;
     private Vector2 clickStartPosition;
@@ -30,6 +43,7 @@ public class ItemSlotView
     private CanvasGroup itemIconCanvasGroup;
     private Tween dragTween;
     private Image itemIcon;
+    private BagItemData data;
 
     void Start()
     {
@@ -39,7 +53,7 @@ public class ItemSlotView
 
         itemIcon.material = new Material(itemIcon.material);
 
-        SetItem(BagItemData.NO_TIEM);
+        SetEmpty();
     }
 
     void Update()
@@ -51,34 +65,28 @@ public class ItemSlotView
             case ItemSlotState.DRAGGING:
                 break;
             case ItemSlotState.RELEASED:
-                // TODO: make needed calculations here (checks)
-                //
-                // if (okay to merge)
-                // state = ItemSlotState.MERGING;
-                ShowMergingVisuals();
-                // else
-                state = ItemSlotState.MERGING;
-                // SnapToSlot();
+                Moved?.Invoke();
                 break;
             case ItemSlotState.SNAPPING:
                 state = ItemSlotState.RESTING; // TODO: wait for the snap animation and then change the state
                 break;
             case ItemSlotState.MERGING:
                 state = ItemSlotState.RESTING; // TODO: wait for the merge animation and then change the state
-                SetItem(new());
                 break;
             case ItemSlotState.HOVERED:
                 break;
         }
     }
 
+    public BagItemData GetItem() => data;
+
     public void SetItem(BagItemData data)
     {
-        var hasItem = data.Id > -1;
+        this.data = data;
+
+        var hasItem = !data.IsEmpty();
 
         itemIconCanvasGroup.alpha = hasItem ? 1f : 0f;
-        itemIconCanvasGroup.interactable = hasItem;
-        itemIconCanvasGroup.blocksRaycasts = hasItem;
 
         if (!hasItem)
             return;
@@ -86,23 +94,52 @@ public class ItemSlotView
         itemIcon.color = data.Color;
     }
 
+    public void SetEmpty()
+    {
+        rectTransform.anchoredPosition = Vector2.zero;
+        data.SetEmpty();
+        SetItem(data);
+    }
+
+    public void MergeWithItem(BagItemData item)
+    {
+        SetEmpty();
+        state = ItemSlotState.MERGING;
+    }
+
+    public void SnapToSlot(BagItemData item)
+    {
+        SetEmpty();
+        state = ItemSlotState.SNAPPING;
+    }
+
+    public bool IsHovered() => state == ItemSlotState.HOVERED;
+
     public void OnDrag(PointerEventData eventData)
     {
+        if (state != ItemSlotState.DRAGGING)
+            return;
+
         Vector2 screenDelta = eventData.position - clickStartPosition;
         Vector2 canvasDelta = screenDelta / canvas.scaleFactor;
-        dragTween.Complete();
+        dragTween.Kill();
         dragTween = rectTransform.DOAnchorPos(dragStartPosition + canvasDelta, dragSmoothTime);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (state != ItemSlotState.RESTING)
+        if (state != ItemSlotState.RESTING && state != ItemSlotState.HOVERED)
+            return;
+
+        if (data.IsEmpty())
             return;
 
         state = ItemSlotState.DRAGGING;
 
         dragStartPosition = rectTransform.anchoredPosition;
         clickStartPosition = eventData.position;
+
+        itemIconCanvasGroup.blocksRaycasts = false;
 
         ShowDraggingVisuals();
     }
@@ -114,6 +151,26 @@ public class ItemSlotView
 
         state = ItemSlotState.RELEASED;
         dragTween.Complete();
+
+        itemIconCanvasGroup.blocksRaycasts = true;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (state != ItemSlotState.RESTING)
+            return;
+
+        state = ItemSlotState.HOVERED;
+        itemIcon.color = Color.black;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (state != ItemSlotState.HOVERED)
+            return;
+
+        state = ItemSlotState.RESTING;
+        itemIcon.color = data.Color;
     }
 
     private void ShowDraggingVisuals()
@@ -125,7 +182,7 @@ public class ItemSlotView
     private void ShowMergingVisuals()
     {
         itemIcon.material.renderQueue -= 1;
-        itemIcon.DOColor(Color.white, .5f);
+        itemIcon.DOColor(data.Color, .5f);
     }
 
     public enum ItemSlotState

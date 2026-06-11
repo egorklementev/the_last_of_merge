@@ -9,5 +9,7 @@ public struct BagItemData
     public int SlotId;
     public Color Color;
 
-    public static BagItemData NO_TIEM = new() { Id = -1 };
+    public void SetEmpty() => Id = -1;
+
+    public readonly bool IsEmpty() => Id < 0;
 }
