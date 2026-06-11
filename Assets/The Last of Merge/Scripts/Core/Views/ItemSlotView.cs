@@ -6,11 +6,19 @@ using Zenject;
 
 [RequireComponent(typeof(Image))]
 [RequireComponent(typeof(RectTransform))]
-public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class ItemSlotView
+    : MonoBehaviour,
+        IBeginDragHandler,
+        IEndDragHandler,
+        IDragHandler,
+        IItemSlotView
 {
     [SerializeField]
     [Range(0f, 1f)]
     private float dragSmoothTime = 0.1f;
+
+    [field: SerializeField]
+    public int Id { get; set; } = -1;
 
     [Inject(Id = "main_canvas")]
     private Canvas canvas;
@@ -31,9 +39,7 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
 
         itemIcon.material = new Material(itemIcon.material);
 
-        // DEBUG
-        SetItem(Random.value < .333f);
-        // DEBUG
+        SetItem(BagItemData.NO_TIEM);
     }
 
     void Update()
@@ -59,18 +65,25 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
                 break;
             case ItemSlotState.MERGING:
                 state = ItemSlotState.RESTING; // TODO: wait for the merge animation and then change the state
-                SetItem(false);
+                SetItem(new());
                 break;
             case ItemSlotState.HOVERED:
                 break;
         }
     }
 
-    public void SetItem(bool hasItem)
+    public void SetItem(BagItemData data)
     {
+        var hasItem = data.Id > -1;
+
         itemIconCanvasGroup.alpha = hasItem ? 1f : 0f;
         itemIconCanvasGroup.interactable = hasItem;
         itemIconCanvasGroup.blocksRaycasts = hasItem;
+
+        if (!hasItem)
+            return;
+
+        itemIcon.color = data.Color;
     }
 
     public void OnDrag(PointerEventData eventData)
