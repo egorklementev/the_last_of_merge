@@ -1,6 +1,9 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(Image))]
 [RequireComponent(typeof(RectTransform))]
 public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
@@ -15,10 +18,15 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     private Vector2 dragStartPosition;
     private Vector2 clickStartPosition;
     private ItemSlotState state = ItemSlotState.RESTING;
+    private Tween dragTween;
+    private Image itemIcon;
 
     void Start()
     {
         rectTransform = GetComponent<RectTransform>();
+        itemIcon = GetComponent<Image>();
+
+        itemIcon.material = new Material(itemIcon.material);
     }
 
     void Update()
@@ -43,7 +51,9 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     {
         Vector2 screenDelta = eventData.position - clickStartPosition;
         Vector2 canvasDelta = screenDelta / canvas.scaleFactor;
-        rectTransform.anchoredPosition = dragStartPosition + canvasDelta;
+        //rectTransform.anchoredPosition = dragStartPosition + canvasDelta;
+        dragTween.Kill();
+        dragTween = rectTransform.DOAnchorPos(dragStartPosition + canvasDelta, dragSmoothTime);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -54,6 +64,8 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         state = ItemSlotState.DRAGGING;
         dragStartPosition = rectTransform.anchoredPosition;
         clickStartPosition = eventData.position;
+
+        itemIcon.materialForRendering.renderQueue += 1;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -62,11 +74,15 @@ public class ItemSlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             return;
 
         state = ItemSlotState.RELEASED;
+        dragTween.Kill();
+
+        itemIcon.material.renderQueue -= 1;
     }
 
     public enum ItemSlotState
     {
         RESTING,
+        HOVERED,
         DRAGGING,
         RELEASED,
         SNAPPING,

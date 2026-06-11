@@ -148,7 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39cec9745c4699f4b926445b46fcd961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemSlotView
-  dragSmoothTime: 0.1
+  dragSmoothTime: 0.25
+  canvas: {fileID: 0}
 --- !u!1 &6706833672451902921
 GameObject:
   m_ObjectHideFlags: 0

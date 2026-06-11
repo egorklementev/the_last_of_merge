@@ -7932,10 +7932,6 @@ PrefabInstance:
       propertyPath: canvas
       value: 
       objectReference: {fileID: 2126615842}
-    - target: {fileID: 196224497533987331, guid: c5cd1098d5592274491802c6715ecc4b, type: 3}
-      propertyPath: dragSmoothTime
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 429525881793634408, guid: c5cd1098d5592274491802c6715ecc4b, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
