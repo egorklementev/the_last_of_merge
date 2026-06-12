@@ -12,21 +12,27 @@ public class BagSpacePresenter
     [Inject]
     private IBagSpaceView bagSpaceView;
 
-    private ItemMergeController itemMergeController = new();
+    [Inject]
+    private ItemMergeController itemMergeController;
 
     public async UniTask InitializeBagSpaceAsync()
     {
         var itemDatas = await bagItemsProvider.GetBagItemsAsync();
         await bagSpaceView.InitItemsAsync(itemDatas);
 
-        bagSpaceView.ItemMoved += OnItemMoved;
+        bagSpaceView.ItemMoved += (i1, i2) => OnItemMoved(i1, i2).Forget();
     }
 
-    private void OnItemMoved(BagItemData movingItemData, BagItemData restingItemData)
+    private async UniTaskVoid OnItemMoved(BagItemData movingItemData, BagItemData restingItemData)
     {
-        if (itemMergeController.CanBeMerged(movingItemData, restingItemData, out var result))
+        var (canBeMerged, resultingItem) = await itemMergeController.CanBeMerged(
+            movingItemData,
+            restingItemData
+        );
+
+        if (canBeMerged)
         {
-            bagSpaceView.MergeItems(movingItemData, restingItemData, result);
+            bagSpaceView.MergeItems(movingItemData, restingItemData, resultingItem);
             // TODO: update model here
         }
         else if (restingItemData.IsEmpty())
