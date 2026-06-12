@@ -68,9 +68,11 @@ public class ItemSlotView
                 Moved?.Invoke();
                 break;
             case ItemSlotState.SNAPPING:
+                ShowSnappingVisuals();
                 state = ItemSlotState.RESTING; // TODO: wait for the snap animation and then change the state
                 break;
             case ItemSlotState.MERGING:
+                ShowMergingVisuals();
                 state = ItemSlotState.RESTING; // TODO: wait for the merge animation and then change the state
                 break;
             case ItemSlotState.HOVERED:
@@ -180,6 +182,12 @@ public class ItemSlotView
     }
 
     private void ShowMergingVisuals()
+    {
+        itemIcon.material.renderQueue -= 1;
+        itemIcon.DOColor(data.Color, .5f);
+    }
+
+    private void ShowSnappingVisuals()
     {
         itemIcon.material.renderQueue -= 1;
         itemIcon.DOColor(data.Color, .5f);

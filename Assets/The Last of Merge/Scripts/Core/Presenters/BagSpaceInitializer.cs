@@ -19,6 +19,9 @@ public class BagSpaceInitializer : MonoBehaviour
     [SerializeField]
     private RectTransform rowPrefab;
 
+    [SerializeField]
+    private List<ItemSlotView> equipmentSlotViews = new();
+
     [Inject]
     private DiContainer container;
 
@@ -40,6 +43,12 @@ public class BagSpaceInitializer : MonoBehaviour
             }
 
             itemSlotViews.AddRange(slotsInRow);
+        }
+
+        itemSlotViews.AddRange(equipmentSlotViews);
+        for (int i = 0; i < equipmentSlotViews.Count; i++)
+        {
+            equipmentSlotViews[i].Id = slotCounter++;
         }
 
         Initialized = true;
