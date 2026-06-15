@@ -3,7 +3,8 @@ using UnityEngine;
 /// <summary>
 /// Logical bag item data
 /// </summary>
-public struct BagItemData
+[CreateAssetMenu(fileName = "BagItemData", menuName = "Scriptable Objects/BagItemData")]
+public class BagItemData : ScriptableObject
 {
     public int Id;
     public int SlotId;
@@ -11,5 +12,5 @@ public struct BagItemData
 
     public void SetEmpty() => Id = -1;
 
-    public readonly bool IsEmpty() => Id < 0;
+    public bool IsEmpty() => Id < 0;
 }
