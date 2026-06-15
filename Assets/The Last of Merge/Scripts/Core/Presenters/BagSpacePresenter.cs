@@ -25,24 +25,27 @@ public class BagSpacePresenter
 
     private async UniTaskVoid OnItemMoved(BagItemData movingItemData, BagItemData restingItemData)
     {
-        var (canBeMerged, resultingItem) = await itemMergeController.CanBeMerged(
-            movingItemData,
-            restingItemData
-        );
+        var mergeResult = await itemMergeController.TryMergeItems(movingItemData, restingItemData);
 
-        if (canBeMerged)
+        // TODO: update the model down below
+        switch (mergeResult.MergeResultType)
         {
-            bagSpaceView.MergeItems(movingItemData, restingItemData, resultingItem);
-            // TODO: update model here
-        }
-        else if (restingItemData.IsEmpty())
-        {
-            bagSpaceView.SnapItems(movingItemData, restingItemData);
-            // TODO: update model here
-        }
-        else
-        {
-            bagSpaceView.SnapItems(movingItemData, movingItemData);
+            case ItemMergeController.MergeResultType.SUCCESS:
+                bagSpaceView.MergeItems(
+                    movingItemData,
+                    restingItemData,
+                    mergeResult.MergeResultItem
+                );
+                break;
+            case ItemMergeController.MergeResultType.SAME_SLOT:
+                bagSpaceView.SnapItems(movingItemData, movingItemData);
+                break;
+            case ItemMergeController.MergeResultType.SINGLE_ITEM: // Moving item
+                bagSpaceView.SnapItems(movingItemData, restingItemData);
+                break;
+            case ItemMergeController.MergeResultType.NO_RECIPE_FOUND:
+                // TODO: show some visuals here
+                break;
         }
     }
 }
