@@ -88,6 +88,7 @@ public class BagSpaceView : MonoBehaviour, IBagSpaceView
         }
 
         movingSlot.MergeWithItem(restingItem);
+        restingSlot.SetItem(resultingItem);
     }
 
     public void SnapItems(BagItemData movingItem, BagItemData restingItem)
