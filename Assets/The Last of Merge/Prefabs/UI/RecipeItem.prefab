@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 1435046691526466516}
   - component: {fileID: 6547131680289794887}
   - component: {fileID: 8372211603432284465}
+  - component: {fileID: 1504119559498338376}
   m_Layer: 5
   m_Name: RecipeItem
   m_TagString: Untagged
@@ -189,6 +190,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.5
+--- !u!114 &1504119559498338376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2821159954087893854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55f1ed940213366418082dd1622f4726, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RecipeListEntryView
+  itemIcon: {fileID: 5643146940281293668}
+  itemTitle: {fileID: 7047930941986876621}
 --- !u!1 &4986469049800301324
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,7 +296,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50.6
+  m_fontSize: 8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

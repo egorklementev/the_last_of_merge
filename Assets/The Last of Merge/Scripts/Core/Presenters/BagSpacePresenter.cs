@@ -15,7 +15,7 @@ public class BagSpacePresenter
     [Inject]
     private ItemMergeController itemMergeController;
 
-    public async UniTask InitializeBagSpaceAsync()
+    public async UniTask InitializeAsync()
     {
         var itemDatas = await bagItemsProvider.GetBagItemsAsync();
         await bagSpaceView.InitItemsAsync(itemDatas);

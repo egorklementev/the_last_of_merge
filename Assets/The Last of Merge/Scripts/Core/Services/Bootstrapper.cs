@@ -9,11 +9,15 @@ public class Bootstrapper : IInitializable
     [Inject]
     private BagSpacePresenter bagSpacePresenter;
 
+    [Inject]
+    private RecipeScreenPresenter recipeScreenPresenter;
+
     public void Initialize()
     {
         UniTask.Void(async () =>
         {
-            await bagSpacePresenter.InitializeBagSpaceAsync();
+            await bagSpacePresenter.InitializeAsync();
+            await recipeScreenPresenter.InitializeAsync();
         });
     }
 }
