@@ -10,7 +10,7 @@ public interface IBagSpaceView
     /// <summary>
     /// Fires when a user tries to move items inside the bag
     /// </summary>
-    public event Action<BagItemData, BagItemData> ItemMoved;
+    public event Action<ItemSlot, ItemSlot> ItemMoved;
 
     /// <summary>
     /// Initializes items in the bag space
@@ -23,14 +23,7 @@ public interface IBagSpaceView
     /// </summary>
     public void ClearItems();
 
-    /// <param name="item">Item to be set in the bag</param>
-    public void SetItem(BagItemData item);
+    public void MergeItems(ItemSlot movingItem, ItemSlot restingItem, BagItemData resultingItem);
 
-    public void MergeItems(
-        BagItemData movingItem,
-        BagItemData restingItem,
-        BagItemData resultingItem
-    );
-
-    public void SnapItems(BagItemData movingItem, BagItemData restingItem);
+    public void SnapItems(ItemSlot movingItem, ItemSlot restingItem);
 }

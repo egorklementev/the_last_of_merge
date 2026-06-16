@@ -4,8 +4,8 @@ using UnityEngine;
 public class MergeRecipe : ScriptableObject
 {
     public int Id;
-    public int ItemId1;
-    public int ItemId2;
-    public int ResultingItemId;
+    public BagItemData Item1;
+    public BagItemData Item2;
+    public BagItemData ResultingItem;
     public string Metadata;
 }

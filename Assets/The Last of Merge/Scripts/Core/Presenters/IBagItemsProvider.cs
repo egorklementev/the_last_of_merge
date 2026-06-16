@@ -8,4 +8,6 @@ public interface IBagItemsProvider
 {
     /// <returns>A list of bag items stored in the bag.</returns>
     public UniTask<IList<BagItemData>> GetBagItemsAsync();
+
+    public BagItemData GetBagItemById(int id);
 }
