@@ -41,6 +41,7 @@ public class BagSpacePresenter
                 break;
             case ItemMergeController.MergeResultType.NO_RECIPE_FOUND:
                 // TODO: show some visuals here
+                bagSpaceView.SnapItems(movingSlot, movingSlot);
                 break;
         }
     }

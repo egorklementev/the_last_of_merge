@@ -33,6 +33,7 @@ public class ItemSlotView
     private ItemSlotState state = ItemSlotState.RESTING;
     private CanvasGroup itemIconCanvasGroup;
     private Tween dragTween;
+    private Tween colorTween;
     private Image itemIcon;
 
     void Start()
@@ -166,17 +167,19 @@ public class ItemSlotView
     private void ShowDraggingVisuals()
     {
         itemIcon.materialForRendering.renderQueue += 1;
-        itemIcon.DOColor(Color.deepPink, .5f);
+        colorTween = itemIcon.DOColor(Color.deepPink, .5f);
     }
 
     private void ShowMergingVisuals()
     {
+        colorTween.Kill();
         itemIcon.material.renderQueue -= 1;
         itemIcon.color = Color.white;
     }
 
     private void ShowSnappingVisuals()
     {
+        colorTween.Kill();
         itemIcon.material.renderQueue -= 1;
         itemIcon.color = Color.white;
     }
