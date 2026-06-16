@@ -18,24 +18,15 @@ public class ItemSlotView
 {
     public event Action Moved;
 
+    public ItemSlot ContainingSlot { get; set; }
+
     [SerializeField]
     [Range(0f, 1f)]
     private float dragSmoothTime = 0.1f;
 
-    public int Id
-    {
-        get => id;
-        set
-        {
-            id = value;
-            data.SlotId = id;
-        }
-    }
-
     [Inject(Id = "main_canvas")]
     private Canvas canvas;
 
-    private int id = -1;
     private RectTransform rectTransform;
     private Vector2 dragStartPosition;
     private Vector2 clickStartPosition;
@@ -43,7 +34,6 @@ public class ItemSlotView
     private CanvasGroup itemIconCanvasGroup;
     private Tween dragTween;
     private Image itemIcon;
-    private BagItemData data;
 
     void Start()
     {
@@ -80,38 +70,36 @@ public class ItemSlotView
         }
     }
 
-    public BagItemData GetItem() => data;
-
     public void SetItem(BagItemData data)
     {
-        this.data = data;
-
-        var hasItem = !data.IsEmpty();
-
-        itemIconCanvasGroup.alpha = hasItem ? 1f : 0f;
-
-        if (!hasItem)
-            return;
-
-        itemIcon.color = data.Color;
+        itemIconCanvasGroup.alpha = 1f;
+        itemIcon.sprite = data.Sprite;
     }
 
     public void SetEmpty()
     {
+        itemIconCanvasGroup.alpha = 0f;
         rectTransform.anchoredPosition = Vector2.zero;
-        data.SetEmpty();
-        SetItem(data);
+        itemIcon.sprite = null;
     }
 
-    public void MergeWithItem(BagItemData item)
+    public void OnMergeWithSlot()
     {
         SetEmpty();
         state = ItemSlotState.MERGING;
     }
 
-    public void SnapToSlot(BagItemData item)
+    public void OnSnapToSlot(bool isSameSlot)
     {
-        SetEmpty();
+        if (isSameSlot)
+        {
+            rectTransform.anchoredPosition = Vector2.zero;
+        }
+        else
+        {
+            SetEmpty();
+        }
+
         state = ItemSlotState.SNAPPING;
     }
 
@@ -133,7 +121,7 @@ public class ItemSlotView
         if (state != ItemSlotState.RESTING && state != ItemSlotState.HOVERED)
             return;
 
-        if (data.IsEmpty())
+        if (ContainingSlot.IsEmpty())
             return;
 
         state = ItemSlotState.DRAGGING;
@@ -172,7 +160,7 @@ public class ItemSlotView
             return;
 
         state = ItemSlotState.RESTING;
-        itemIcon.color = data.Color;
+        itemIcon.color = Color.white;
     }
 
     private void ShowDraggingVisuals()
@@ -184,13 +172,13 @@ public class ItemSlotView
     private void ShowMergingVisuals()
     {
         itemIcon.material.renderQueue -= 1;
-        itemIcon.DOColor(data.Color, .5f);
+        itemIcon.color = Color.white;
     }
 
     private void ShowSnappingVisuals()
     {
         itemIcon.material.renderQueue -= 1;
-        itemIcon.DOColor(data.Color, .5f);
+        itemIcon.color = Color.white;
     }
 
     public enum ItemSlotState

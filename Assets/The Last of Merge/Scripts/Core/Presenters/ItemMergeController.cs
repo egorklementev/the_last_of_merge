@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 using Zenject;
 
 /// <summary>
@@ -10,6 +9,9 @@ public class ItemMergeController : IInitializable
 {
     [Inject]
     private IMergeRecipeProvider mergeRecipeProvider;
+
+    [Inject]
+    private IBagItemsProvider bagItemsProvider;
 
     private IList<MergeRecipe> recipes;
 
@@ -21,48 +23,41 @@ public class ItemMergeController : IInitializable
         });
     }
 
-    public async UniTask<MergeRequestResult> TryMergeItems(BagItemData item1, BagItemData item2)
+    public async UniTask<MergeRequestResult> TryMergeSlots(ItemSlot slot1, ItemSlot slot2)
     {
         await UniTask.WaitWhile(() => recipes == null);
 
-        var noItem = new BagItemData() { Id = -1 };
-
         // Putting an item in the same slot => no merging
-        var isDifferentSlots = item1.SlotId != item2.SlotId;
+        var isDifferentSlots = slot1.SlotId != slot2.SlotId;
         if (!isDifferentSlots)
             return new MergeRequestResult()
             {
                 MergeResultType = MergeResultType.SAME_SLOT,
-                MergeResultItem = noItem,
+                MergeResultItem = default,
             };
 
         // Putting an item in empty slot => no merging
-        if (item1.IsEmpty() || item2.IsEmpty())
+        if (slot1.IsEmpty() || slot2.IsEmpty())
             return new MergeRequestResult()
             {
                 MergeResultType = MergeResultType.SINGLE_ITEM,
-                MergeResultItem = noItem,
+                MergeResultItem = default,
             };
 
         // No recipe found => no merging
-        var recipe = GetRecipeForItems(item1, item2);
+        var recipe = GetRecipeForItems(slot1.ItemData, slot2.ItemData);
         if (recipe == null)
             return new MergeRequestResult()
             {
                 MergeResultType = MergeResultType.NO_RECIPE_FOUND,
-                MergeResultItem = noItem,
+                MergeResultItem = default,
             };
 
         // Now, we can merge
         return new MergeRequestResult()
         {
             MergeResultType = MergeResultType.SUCCESS,
-            MergeResultItem = new() // TODO: find a way of getting this from provider or something
-            {
-                Id = recipe.ResultingItemId,
-                Color = Color.cyan,
-                SlotId = item2.SlotId,
-            },
+            MergeResultItem = bagItemsProvider.GetBagItemById(recipe.ResultingItem.Id),
         };
     }
 
@@ -73,10 +68,10 @@ public class ItemMergeController : IInitializable
             var recipe = recipes[i];
 
             // ATTENTION: order below is not important, so there are two checks, not one
-            if (recipe.ItemId1 == item1.Id && recipe.ItemId2 == item2.Id)
+            if (recipe.Item1.Id == item1.Id && recipe.Item2.Id == item2.Id)
                 return recipe;
 
-            if (recipe.ItemId1 == item2.Id && recipe.ItemId2 == item1.Id)
+            if (recipe.Item1.Id == item2.Id && recipe.Item2.Id == item1.Id)
                 return recipe;
         }
 

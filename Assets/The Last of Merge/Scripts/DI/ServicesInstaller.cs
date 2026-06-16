@@ -27,11 +27,19 @@ public class ServicesInstaller : MonoInstaller
 
         Container.BindInterfacesAndSelfTo<ItemMergeController>().FromNew().AsSingle();
 
-        // DEBUG
-        Container.Bind<IBagItemsProvider>().FromInstance(new DebugBagItemsProvider()).AsSingle();
+        Container.BindInterfacesAndSelfTo<AddressablesManager>().FromNew().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<DefaultBagItemsProvider>().FromNew().AsSingle().NonLazy();
         Container
-            .Bind<IMergeRecipeProvider>()
-            .FromInstance(new DebugMergeRecipeProvider())
-            .AsSingle();
+            .BindInterfacesAndSelfTo<DefaultMergeRecipeProvider>()
+            .FromNew()
+            .AsSingle()
+            .NonLazy();
+
+        // DEBUG
+        //Container.Bind<IBagItemsProvider>().FromInstance(new DebugBagItemsProvider()).AsSingle();
+        //Container
+        //    .Bind<IMergeRecipeProvider>()
+        //    .FromInstance(new DebugMergeRecipeProvider())
+        //    .AsSingle();
     }
 }
