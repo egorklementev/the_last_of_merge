@@ -10,9 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1991417b9eb82ed4fbcec879c14bbb8a, type: 3}
-  m_Name: MetalScrap
+  m_Name: 0006-Antiseptic
   m_EditorClassIdentifier: Assembly-CSharp::BagItemData
-  Id: 0
-  SlotId: 0
-  Color: {r: 0, g: 0, b: 0, a: 0}
-  Sprite: {fileID: 21300000, guid: 9ec293262c54a04479d10c1c1e32d91e, type: 3}
+  Id: 6
+  Sprite: {fileID: 21300000, guid: ab3b9c664719aab4fb719aa526ab1d04, type: 3}

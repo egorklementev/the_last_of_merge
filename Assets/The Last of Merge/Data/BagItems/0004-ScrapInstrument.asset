@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1991417b9eb82ed4fbcec879c14bbb8a, type: 3}
-  m_Name: Sticks
+  m_Name: 0004-ScrapInstrument
   m_EditorClassIdentifier: Assembly-CSharp::BagItemData
-  Id: 2
+  Id: 4
   SlotId: 0
   Color: {r: 0, g: 0, b: 0, a: 0}
-  Sprite: {fileID: 21300000, guid: 8d31af29e68ab7c4ab3398a7621a5d77, type: 3}
+  Sprite: {fileID: 21300000, guid: 36094bf20d61ab347b68ffdc9d593d01, type: 3}

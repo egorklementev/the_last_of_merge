@@ -25,7 +25,7 @@ public class DefaultMergeRecipeProvider : IMergeRecipeProvider, IInitializable
         });
     }
 
-    public async UniTask<IList<MergeRecipe>> GetRecipes()
+    public async UniTask<IList<MergeRecipe>> GetRecipesAsync()
     {
         await UniTask.WaitUntil(() => initialized && allMergeRecipes != null);
 

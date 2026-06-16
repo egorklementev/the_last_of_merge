@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Zenject;
 
@@ -13,34 +15,86 @@ public class BagSpacePresenter
     private IBagSpaceView bagSpaceView;
 
     [Inject]
+    private BagSpaceInitializer bagSpaceInitializer;
+
+    [Inject]
     private ItemMergeController itemMergeController;
 
-    public async UniTask InitializeBagSpaceAsync()
+    [Inject]
+    private BagSpaceModel bagSpaceModel;
+
+    public async UniTask InitializeAsync()
     {
         var itemDatas = await bagItemsProvider.GetBagItemsAsync();
-        await bagSpaceView.InitItemsAsync(itemDatas);
+        await InitItemsAsync(itemDatas);
+    }
 
-        bagSpaceView.ItemMoved += (i1, i2) => OnItemMoved(i1, i2).Forget();
+    private IList<ItemSlot> itemSlots;
+
+    public async UniTask InitItemsAsync(IList<BagItemData> items)
+    {
+        if (itemSlots != null) // No secondary initializations allowed
+            return;
+
+        await UniTask.WaitUntil(() => bagSpaceInitializer.Initialized);
+        itemSlots = bagSpaceInitializer.GetInitializedItemSlots();
+
+        for (int i = 0; i < itemSlots.Count; i++)
+        {
+            var slot = itemSlots[i];
+            slot.Moved += () =>
+            {
+                var targetSlot = itemSlots.SingleOrDefault(s =>
+                    s.IsHovered() && s.SlotId != slot.SlotId
+                );
+                if (targetSlot == null)
+                {
+                    OnItemMoved(slot, slot).Forget();
+                }
+                else
+                {
+                    OnItemMoved(slot, targetSlot).Forget();
+                }
+            };
+
+            var data = bagSpaceModel.GetDataForSlot(slot.SlotId);
+            if (data == null)
+                slot.SetEmpty();
+            else
+                slot.SetItem(data);
+        }
+    }
+
+    public ItemSlot GetRandomFreeSlot()
+    {
+        if (itemSlots.Count(slot => slot.IsEmpty()) == 0)
+            return null;
+
+        return itemSlots.Where(slot => slot.IsEmpty()).GetRandom();
     }
 
     private async UniTaskVoid OnItemMoved(ItemSlot movingSlot, ItemSlot restingSlot)
     {
         var mergeResult = await itemMergeController.TryMergeSlots(movingSlot, restingSlot);
 
-        // TODO: update the model down below
         switch (mergeResult.MergeResultType)
         {
             case ItemMergeController.MergeResultType.SUCCESS:
                 bagSpaceView.MergeItems(movingSlot, restingSlot, mergeResult.MergeResultItem);
+                bagSpaceModel.SetEmpty(movingSlot);
+                bagSpaceModel.UpdateSlot(restingSlot);
                 break;
             case ItemMergeController.MergeResultType.SAME_SLOT:
                 bagSpaceView.SnapItems(movingSlot, movingSlot);
                 break;
             case ItemMergeController.MergeResultType.SINGLE_ITEM: // Moving item
                 bagSpaceView.SnapItems(movingSlot, restingSlot);
+                bagSpaceModel.SetEmpty(movingSlot);
+                bagSpaceModel.UpdateSlot(restingSlot);
                 break;
             case ItemMergeController.MergeResultType.NO_RECIPE_FOUND:
                 // TODO: show some visuals here
+                bagSpaceView.SnapItems(movingSlot, movingSlot);
                 break;
         }
     }
