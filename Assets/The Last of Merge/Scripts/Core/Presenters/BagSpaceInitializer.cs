@@ -27,32 +27,44 @@ public class BagSpaceInitializer : MonoBehaviour
 
     public bool Initialized { get; private set; } = false;
 
-    private List<IItemSlotView> itemSlotViews = new();
+    private List<ItemSlot> itemSlots = new();
 
     void Start()
     {
         int slotCounter = 0;
         rowsCount = math.clamp(rowsCount, 0, 10); // ATTENTION: max 10 rows
+        var allSlots = new List<ItemSlot>();
         for (int i = 0; i < rowsCount; i++)
         {
             var row = container.InstantiatePrefab(rowPrefab, rowsHolder);
-            var slotsInRow = row.GetComponentsInChildren<ItemSlotView>();
-            foreach (var slot in slotsInRow)
+            var slotsViewsInRow = row.GetComponentsInChildren<ItemSlotView>();
+            for (int j = 0; j < slotsViewsInRow.Length; j++)
             {
-                slot.Id = slotCounter++;
-            }
+                var slot = container.Instantiate<ItemSlot>();
+                slot.SlotId = slotCounter++;
+                slot.SlotView = slotsViewsInRow[j];
+                slot.Initialize();
 
-            itemSlotViews.AddRange(slotsInRow);
+                slotsViewsInRow[j].ContainingSlot = slot;
+                allSlots.Add(slot);
+            }
         }
 
-        itemSlotViews.AddRange(equipmentSlotViews);
         for (int i = 0; i < equipmentSlotViews.Count; i++)
         {
-            equipmentSlotViews[i].Id = slotCounter++;
+            var slot = container.Instantiate<ItemSlot>();
+            slot.SlotId = slotCounter++;
+            slot.SlotView = equipmentSlotViews[i];
+            slot.Initialize();
+
+            equipmentSlotViews[i].ContainingSlot = slot;
+            allSlots.Add(slot);
         }
+
+        itemSlots.AddRange(allSlots);
 
         Initialized = true;
     }
 
-    public IList<IItemSlotView> GetInitializedItemSlots() => itemSlotViews;
+    public IList<ItemSlot> GetInitializedItemSlots() => itemSlots;
 }

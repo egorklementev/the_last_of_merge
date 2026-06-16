@@ -25,7 +25,21 @@ public class ServicesInstaller : MonoInstaller
         Container.Bind<BagSpacePresenter>().FromNew().AsSingle();
         Container.Bind<IBagSpaceView>().FromInstance(bagSpaceView).AsSingle();
 
+        Container.BindInterfacesAndSelfTo<ItemMergeController>().FromNew().AsSingle();
+
+        Container.BindInterfacesAndSelfTo<AddressablesManager>().FromNew().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<DefaultBagItemsProvider>().FromNew().AsSingle().NonLazy();
+        Container
+            .BindInterfacesAndSelfTo<DefaultMergeRecipeProvider>()
+            .FromNew()
+            .AsSingle()
+            .NonLazy();
+
         // DEBUG
-        Container.Bind<IBagItemsProvider>().FromInstance(new DebugBagItemsProvider()).AsSingle();
+        //Container.Bind<IBagItemsProvider>().FromInstance(new DebugBagItemsProvider()).AsSingle();
+        //Container
+        //    .Bind<IMergeRecipeProvider>()
+        //    .FromInstance(new DebugMergeRecipeProvider())
+        //    .AsSingle();
     }
 }

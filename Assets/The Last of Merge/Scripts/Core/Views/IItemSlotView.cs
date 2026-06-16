@@ -8,11 +8,6 @@ public interface IItemSlotView
     public event Action Moved;
 
     /// <summary>
-    /// A unique ID of an item slot.
-    /// </summary>
-    public int Id { get; set; }
-
-    /// <summary>
     /// Sets (or replaces) an item within this slot.
     /// </summary>
     public void SetItem(BagItemData data);
@@ -22,14 +17,11 @@ public interface IItemSlotView
     /// </summary>
     public void SetEmpty();
 
-    /// <returns>Logical info about containing item.</returns>
-    public BagItemData GetItem();
-
     /// <param name="item">Item to be merged with (contains SlotId).</param>
-    public void MergeWithItem(BagItemData item);
+    public void OnMergeWithSlot();
 
     /// <param name="item">Contains SlotId, so there is info about where to snap.</param>
-    public void SnapToSlot(BagItemData item);
+    public void OnSnapToSlot(bool isSameSlot = false);
 
     public bool IsHovered();
 }

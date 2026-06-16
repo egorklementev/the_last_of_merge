@@ -7,12 +7,12 @@ using Zenject;
 
 public class BagSpaceView : MonoBehaviour, IBagSpaceView
 {
-    public event Action<BagItemData, BagItemData> ItemMoved;
+    public event Action<ItemSlot, ItemSlot> ItemMoved;
 
     [Inject]
     private BagSpaceInitializer bagSpaceInitializer;
 
-    private IList<IItemSlotView> itemSlots;
+    private IList<ItemSlot> itemSlots;
 
     public void ClearItems()
     {
@@ -33,75 +33,43 @@ public class BagSpaceView : MonoBehaviour, IBagSpaceView
         await UniTask.WaitUntil(() => bagSpaceInitializer.Initialized);
         itemSlots = bagSpaceInitializer.GetInitializedItemSlots();
 
-        for (int dataI = 0; dataI < items.Count; dataI++)
-        {
-            SetItem(items[dataI]);
-        }
+        // TODO: set actual item data to corresponding slot
+        // TODO: place this code to the right location, SOLID is bad here
+        itemSlots[2].SetItem(items[0]);
+        itemSlots[4].SetItem(items[1]);
+        itemSlots[6].SetItem(items[2]);
+        itemSlots[8].SetItem(items[3]);
+        itemSlots[10].SetItem(items[4]);
 
         for (int i = 0; i < itemSlots.Count; i++)
         {
             var slot = itemSlots[i];
             slot.Moved += () =>
             {
-                var targetSlot = itemSlots.SingleOrDefault(s => s.IsHovered() && s.Id != slot.Id);
+                var targetSlot = itemSlots.SingleOrDefault(s =>
+                    s.IsHovered() && s.SlotId != slot.SlotId
+                );
                 if (targetSlot == null)
                 {
-                    ItemMoved?.Invoke(slot.GetItem(), slot.GetItem());
+                    ItemMoved?.Invoke(slot, slot);
                 }
                 else
                 {
-                    ItemMoved?.Invoke(slot.GetItem(), targetSlot.GetItem());
+                    ItemMoved?.Invoke(slot, targetSlot);
                 }
             };
         }
     }
 
-    public void SetItem(BagItemData item)
+    public void MergeItems(ItemSlot movingSlot, ItemSlot restingSlot, BagItemData resultingItem)
     {
-        if (itemSlots == null)
-            return;
-
-        for (int slotI = 0; slotI < itemSlots.Count; slotI++)
-        {
-            if (item.SlotId != itemSlots[slotI].Id)
-                continue;
-
-            itemSlots[slotI].SetItem(item);
-        }
+        movingSlot.MergeWithSlot();
+        restingSlot.SetItem(resultingItem);
     }
 
-    public void MergeItems(
-        BagItemData movingItem,
-        BagItemData restingItem,
-        BagItemData resultingItem
-    )
+    public void SnapItems(ItemSlot movingSlot, ItemSlot restingSlot)
     {
-        if (movingItem.SlotId == restingItem.SlotId)
-            return;
-
-        var movingSlot = itemSlots.SingleOrDefault(s => s.Id == movingItem.SlotId);
-        var restingSlot = itemSlots.SingleOrDefault(s => s.Id == restingItem.SlotId);
-        if (movingSlot == null || restingSlot == null)
-        {
-            // TODO: error
-            return;
-        }
-
-        movingSlot.MergeWithItem(restingItem);
-    }
-
-    public void SnapItems(BagItemData movingItem, BagItemData restingItem)
-    {
-        var movingSlot = itemSlots.SingleOrDefault(s => s.Id == movingItem.SlotId);
-        var restingSlot = itemSlots.SingleOrDefault(s => s.Id == restingItem.SlotId);
-        if (movingSlot == null || restingSlot == null)
-        {
-            // TODO: error
-            return;
-        }
-
-        movingSlot.SnapToSlot(restingItem);
-        movingItem.SlotId = restingItem.SlotId; // ATTENTION: just changing ID to a new slot
-        restingSlot.SetItem(movingItem);
+        restingSlot.SetItem(movingSlot.ItemData);
+        movingSlot.SnapToSlot(restingSlot);
     }
 }

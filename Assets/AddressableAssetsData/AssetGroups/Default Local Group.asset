@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Default Local Group
+  m_GUID: 35db141b306fb4e4d9c87b1bb6f8ef81
+  m_SerializeEntries:
+  - m_GUID: 01ed12569664af14fb7104b6141ee903
+    m_Address: BagItems/DirtyRags
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47765a7c4dc2f4e439fcc8762b55ceaf
+    m_Address: BagItems/Sticks
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf069179821cfc948a5cfef16dddf92d
+    m_Address: BagItems/MetalScrap
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d7a011535d3692e4dbd8ac28c789d231
+    m_Address: BagItems/Strings
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fce4a644e0d719d4bb24779292211bfe
+    m_Address: BagItems/ScrapInstrument
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd577a29cb24c9c44aca0dc3eebfe5e5
+    m_Address: MergeRecipes/ScrapInstrument
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - merge_recipe
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 19b063c3d1e41a548af1af9d5c6c845e, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: f1d471556ba815945880b71a2911833c, type: 2}
+    - {fileID: 11400000, guid: 22b3440dbf32a634b8d62a847f16f8b9, type: 2}
