@@ -13,6 +13,9 @@ public class ServicesInstaller : MonoInstaller
     private BagSpaceView bagSpaceView;
 
     [SerializeField]
+    private RecipeScreenView recipeScreenView;
+
+    [SerializeField]
     private BagSpaceInitializer bagSpaceInitializer;
 
     public override void InstallBindings()
@@ -24,6 +27,9 @@ public class ServicesInstaller : MonoInstaller
         Container.Bind<BagSpaceInitializer>().FromInstance(bagSpaceInitializer).AsSingle();
         Container.Bind<BagSpacePresenter>().FromNew().AsSingle();
         Container.Bind<IBagSpaceView>().FromInstance(bagSpaceView).AsSingle();
+
+        Container.Bind<RecipeScreenPresenter>().FromNew().AsSingle();
+        Container.Bind<IRecipeScreenView>().FromInstance(recipeScreenView).AsSingle();
 
         Container.BindInterfacesAndSelfTo<ItemMergeController>().FromNew().AsSingle();
 

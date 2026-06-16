@@ -8,7 +8,7 @@ public class DebugMergeRecipeProvider : IMergeRecipeProvider
         return new();
     }
 
-    public async UniTask<IList<MergeRecipe>> GetRecipes()
+    public async UniTask<IList<MergeRecipe>> GetRecipesAsync()
     {
         await UniTask.WaitForSeconds(1.2f);
         return new List<MergeRecipe>()

@@ -19,7 +19,7 @@ public class ItemMergeController : IInitializable
     {
         UniTask.Void(async () =>
         {
-            recipes = await mergeRecipeProvider.GetRecipes();
+            recipes = await mergeRecipeProvider.GetRecipesAsync();
         });
     }
 

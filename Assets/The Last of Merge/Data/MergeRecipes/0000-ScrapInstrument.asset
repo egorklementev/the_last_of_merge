@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c06b7b89f526d674889a4acee5814066, type: 3}
-  m_Name: ScrapInstrument
+  m_Name: 0000-ScrapInstrument
   m_EditorClassIdentifier: Assembly-CSharp::MergeRecipe
   Id: 0
   Item1: {fileID: 11400000, guid: bf069179821cfc948a5cfef16dddf92d, type: 2}

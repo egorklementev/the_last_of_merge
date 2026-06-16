@@ -10,9 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1991417b9eb82ed4fbcec879c14bbb8a, type: 3}
-  m_Name: Strings
+  m_Name: 0003-Strings
   m_EditorClassIdentifier: Assembly-CSharp::BagItemData
   Id: 3
-  SlotId: 0
-  Color: {r: 0, g: 0, b: 0, a: 0}
   Sprite: {fileID: 21300000, guid: 9e09a521c9195e3499448c7c3972909d, type: 3}
