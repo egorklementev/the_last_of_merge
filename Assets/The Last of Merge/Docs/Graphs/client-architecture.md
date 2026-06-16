@@ -1,3 +1,4 @@
+```mermaid
 classDiagram
     direction TB
 
@@ -98,3 +99,4 @@ classDiagram
     ItemSlot --> IBagItemsProvider : Gets Item Data
     
     ItemMergeController --> IMergeRecipeProvider : Checks Rules
+```
