@@ -3123,6 +3123,7 @@ Transform:
   - {fileID: 1963003102}
   - {fileID: 363917082}
   - {fileID: 2108872170}
+  - {fileID: 1430302315}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &703360959
@@ -6162,6 +6163,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1419389549}
   m_CullTransparentMesh: 1
+--- !u!1 &1430302314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1430302315}
+  - component: {fileID: 1430302316}
+  m_Layer: 0
+  m_Name: AuthView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1430302315
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430302314}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 692890207}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1430302316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430302314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1cc21e73d710f4e92843d89422b14a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AuthView
+  loginButton: {fileID: 680874867}
+  registerButton: {fileID: 1310671465}
+  loginInput: {fileID: 320073255}
+  passwordInput: {fileID: 278495868}
+  mainPanelGroup: {fileID: 921612941}
 --- !u!114 &1442156741 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 196224497533987331, guid: c5cd1098d5592274491802c6715ecc4b, type: 3}
@@ -6459,6 +6509,7 @@ MonoBehaviour:
   bagSpaceView: {fileID: 593860389}
   recipeScreenView: {fileID: 363917083}
   deploymentScreenView: {fileID: 2108872171}
+  authView: {fileID: 1430302316}
   bagSpaceInitializer: {fileID: 593860388}
 --- !u!4 &1651641885
 Transform:

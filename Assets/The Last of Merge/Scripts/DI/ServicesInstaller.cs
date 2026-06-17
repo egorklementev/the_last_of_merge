@@ -19,6 +19,9 @@ public class ServicesInstaller : MonoInstaller
     private DeploymentScreenView deploymentScreenView;
 
     [SerializeField]
+    private AuthView authView;
+
+    [SerializeField]
     private BagSpaceInitializer bagSpaceInitializer;
 
     public override void InstallBindings()
@@ -40,6 +43,10 @@ public class ServicesInstaller : MonoInstaller
         Container.Bind<IDeploymentScreenView>().FromInstance(deploymentScreenView).AsSingle();
 
         Container.BindInterfacesAndSelfTo<ItemMergeController>().FromNew().AsSingle();
+
+        Container.Bind<NetworkManager>().FromNew().AsSingle();
+        Container.Bind<IAuthView>().FromInstance(authView).AsSingle();
+        Container.BindInterfacesAndSelfTo<AuthorizationHandler>().FromNew().AsSingle().NonLazy();
 
         Container.BindInterfacesAndSelfTo<AddressablesManager>().FromNew().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<DefaultBagItemsProvider>().FromNew().AsSingle().NonLazy();
