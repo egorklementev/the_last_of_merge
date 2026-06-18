@@ -13,6 +13,4 @@ MonoBehaviour:
   m_Name: 0002-Sticks
   m_EditorClassIdentifier: Assembly-CSharp::BagItemData
   Id: 2
-  SlotId: 0
-  Color: {r: 0, g: 0, b: 0, a: 0}
   Sprite: {fileID: 21300000, guid: 8d31af29e68ab7c4ab3398a7621a5d77, type: 3}

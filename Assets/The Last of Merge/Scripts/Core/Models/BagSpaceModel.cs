@@ -34,7 +34,7 @@ public class BagSpaceModel : IInitializable
         return slotsToItems;
     }
 
-    public void SetEmpty(ItemSlot slot) => slotsToItems.Remove(slot.SlotId);
+    public void SetEmpty(ItemSlot slot) => slotsToItems[slot.SlotId] = null;
 
     public void UpdateSlot(ItemSlot slot) => slotsToItems[slot.SlotId] = slot.ItemData;
 
@@ -54,6 +54,9 @@ public class BagSpaceModel : IInitializable
         var dictToSend = new Dictionary<int, int>();
         foreach (var slotId in slotsToItems.Keys)
         {
+            if (slotsToItems[slotId] == null)
+                continue;
+
             dictToSend[slotId] = slotsToItems[slotId].Id;
         }
 

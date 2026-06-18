@@ -6299,7 +6299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ecb63f07e9f2240af01cb41a45c041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AutoSavesController
-  saveRate: 60
+  saveRate: 10
 --- !u!1 &1510161269
 GameObject:
   m_ObjectHideFlags: 0

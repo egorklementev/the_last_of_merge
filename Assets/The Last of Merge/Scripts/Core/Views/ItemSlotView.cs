@@ -73,6 +73,12 @@ public class ItemSlotView
 
     public void SetItem(BagItemData data)
     {
+        if (data == null)
+        {
+            SetEmpty();
+            return;
+        }
+
         itemIconCanvasGroup.alpha = 1f;
         itemIcon.sprite = data.Sprite;
     }
