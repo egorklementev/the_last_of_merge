@@ -4,9 +4,12 @@ using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
+// TODO: think of a better purpose (and maybe a name) for this file
 public class NetworkManager
 {
     public const string BASE_URL = "http://api.alherorun.ru/api";
+
+    public string AuthToken { get; private set; } = "";
 
     public async UniTask<LoginResult> SendLoginRequest(string username, string password)
     {
@@ -26,6 +29,8 @@ public class NetworkManager
             string responseText = request.downloadHandler.text;
             var response = JsonConvert.DeserializeObject<LoginRequestResponse>(responseText);
 
+            AuthToken = response.token;
+
             PlayerPrefs.SetString("AuthToken", response.token);
             Debug.Log("Login Success! Token saved.");
             return new()
@@ -38,6 +43,7 @@ public class NetworkManager
         else
         {
             Debug.LogError("Login Failed: " + request.downloadHandler.text);
+
             return new() { Success = false };
         }
     }

@@ -48,6 +48,8 @@ public class ServicesInstaller : MonoInstaller
         Container.Bind<IAuthView>().FromInstance(authView).AsSingle();
         Container.BindInterfacesAndSelfTo<AuthorizationHandler>().FromNew().AsSingle().NonLazy();
 
+        Container.Bind<BagSpaceNetworkManager>().FromNew().AsSingle();
+
         Container.BindInterfacesAndSelfTo<AddressablesManager>().FromNew().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<DefaultBagItemsProvider>().FromNew().AsSingle().NonLazy();
         Container

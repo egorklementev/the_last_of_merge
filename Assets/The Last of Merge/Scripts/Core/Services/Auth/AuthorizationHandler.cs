@@ -3,6 +3,8 @@ using Zenject;
 
 public class AuthorizationHandler : IInitializable
 {
+    public bool Authorized { get; set; } = false;
+
     [Inject]
     private IAuthView authView;
 
@@ -23,6 +25,7 @@ public class AuthorizationHandler : IInitializable
             if (success)
             {
                 authView.OnRegisterSuccess();
+                Authorized = true;
             }
         });
     }
@@ -35,6 +38,7 @@ public class AuthorizationHandler : IInitializable
             if (result.Success)
             {
                 authView.OnLoginSuccess();
+                Authorized = true;
             }
         });
     }

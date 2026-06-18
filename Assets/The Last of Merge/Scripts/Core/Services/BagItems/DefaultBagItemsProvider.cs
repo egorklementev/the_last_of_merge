@@ -30,8 +30,10 @@ public class DefaultBagItemsProvider : IBagItemsProvider, IInitializable
         return allItems;
     }
 
-    public BagItemData GetBagItemById(int id)
+    public async UniTask<BagItemData> GetBagItemById(int id)
     {
+        await UniTask.WaitUntil(() => initialized);
+
         for (int i = 0; i < allItems.Count; i++)
         {
             if (allItems[i].Id == id)

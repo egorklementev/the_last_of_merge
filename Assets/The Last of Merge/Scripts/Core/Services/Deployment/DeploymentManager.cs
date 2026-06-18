@@ -26,7 +26,7 @@ public class DeploymentManager
         while (foundItemsCount-- > 0)
         {
             // TODO: change to actual gameplay reward logic
-            result.FoundItems.Add(bagItemsProvider.GetBagItemById(Random.Range(0, 5)));
+            result.FoundItems.Add(await bagItemsProvider.GetBagItemById(Random.Range(0, 5)));
         }
 
         return result;
