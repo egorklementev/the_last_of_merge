@@ -14,7 +14,7 @@ public class BagSpaceNetworkManager
     [Inject]
     private NetworkManager networkManager;
 
-    public async UniTask<Dictionary<int, BagItemData>> SendInventoryRequest()
+    public virtual async UniTask<Dictionary<int, BagItemData>> SendInventoryRequest()
     {
         using var request = new UnityWebRequest($"{NetworkManager.BASE_URL}/inventory", "GET");
         request.downloadHandler = new DownloadHandlerBuffer();
