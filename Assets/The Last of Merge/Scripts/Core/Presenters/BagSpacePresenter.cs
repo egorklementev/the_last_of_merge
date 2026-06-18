@@ -57,8 +57,9 @@ public class BagSpacePresenter
                 }
             };
 
+            await UniTask.WaitUntil(() => bagSpaceModel.Loaded);
             var data = bagSpaceModel.GetDataForSlot(slot.SlotId);
-            if (data == null)
+            if (data == null || data.Id < 0)
                 slot.SetEmpty();
             else
                 slot.SetItem(data);

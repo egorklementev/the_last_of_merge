@@ -1,43 +1,36 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using Zenject;
 
 public class BagSpaceModel : IInitializable
 {
-    [Inject]
-    private IBagItemsProvider bagItemsProvider;
+    public bool Loaded { get; set; } = false;
 
-    private bool loaded = false;
-    private IList<BagItemData> items;
+    [Inject]
+    private AuthorizationHandler authorizationHandler;
+
+    [Inject]
+    private BagSpaceNetworkManager bagSpaceNetworkManager;
+
     private Dictionary<int, BagItemData> slotsToItems;
 
     public void Initialize()
     {
         UniTask.Void(async () =>
         {
-            items = await bagItemsProvider.GetBagItemsAsync();
+            await UniTask.WaitUntil(() => authorizationHandler.Authorized);
+            slotsToItems = await bagSpaceNetworkManager.SendInventoryRequest();
 
-            slotsToItems = new()
-            {
-                { 2, items[0] },
-                { 4, items[1] },
-                { 6, items[2] },
-                { 8, items[3] },
-                { 10, items[4] },
-                { 12, items[5] },
-                { 13, items[6] },
-            };
-
-            loaded = true;
+            Loaded = true;
         });
     }
 
     public Dictionary<int, BagItemData> GetItemsAtSlots()
     {
-        if (!loaded)
+        if (!Loaded)
             return new();
 
-        // TODO: load actual items from the server
         return slotsToItems;
     }
 
@@ -51,5 +44,22 @@ public class BagSpaceModel : IInitializable
             return slotsToItems[slotId];
 
         return null;
-    } 
+    }
+
+    public async UniTask SaveDataToServer()
+    {
+        if (!Loaded)
+            return;
+
+        var dictToSend = new Dictionary<int, int>();
+        foreach (var slotId in slotsToItems.Keys)
+        {
+            dictToSend[slotId] = slotsToItems[slotId].Id;
+        }
+
+        if (await bagSpaceNetworkManager.SendInventorySaveRequest(dictToSend))
+        {
+            Debug.Log("[BagSpaceModel]: Inventory successfully saved on server!");
+        }
+    }
 }
