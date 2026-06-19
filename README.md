@@ -22,7 +22,7 @@
     - Полностью самописное решение позволяет увеличить контроль над сервером
 
 ## Диаграммы архитектуры
-[Посмотреть архитектуру Unity-клиента]("./Assets/The Last of Merge/Docs/Graphs/client-architecture.md")
+[Посмотреть архитектуру Unity-клиента](./Assets/The%20Last%20of%20Merge/Docs/Graphs/client-architecture.md)
 
 ## Как запустить проект
 1. Версия: Unity 6000.2.11f1
