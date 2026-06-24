@@ -12,11 +12,15 @@ classDiagram
     %% Models Layer
     namespace Models {
         class BagItemData {
-            +string itemId
-            +string displayName
+            +int Id
             +Sprite icon
         }
-        class MergeRecipe
+        class MergeRecipe {
+            +int Id
+            +BagItemData item1
+            +BagItemData item2
+            +BagItemData resultItem
+        }
     }
 
     %% Views Layer
@@ -35,25 +39,18 @@ classDiagram
         class ItemSlotView {
             +ShowItem()
         }
+        class BagSpaceInitializer {
+            +Initialize()
+        }
     }
 
     %% Presenters Layer
     namespace Presenters {
-        class BagSpaceInitializer {
-            +Initialize()
-        }
         class BagSpacePresenter {
-            +OnItemDropped()
-        }
-        class ItemMergeController {
-            +TryMerge()
+            +OnItemMoved()
         }
         class ItemSlot {
             +SetItem()
-        }
-        class IBagItemsProvider {
-            <<interface>>
-            +GetItems()
         }
     }
 
@@ -65,6 +62,10 @@ classDiagram
         class AddressablesManager {
             +LoadAssetAsync()
         }
+        class IBagItemsProvider {
+            <<interface>>
+            +GetItems()
+        }
         class DefaultBagItemsProvider {
             +GetItems()
         }
@@ -74,6 +75,9 @@ classDiagram
         }
         class DefaultMergeRecipeProvider {
             +GetRecipes()
+        }
+        class ItemMergeController {
+            +TryMergeSlots(ItemSlot, ItemSlot)
         }
     }
 

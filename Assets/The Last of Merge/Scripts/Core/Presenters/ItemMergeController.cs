@@ -57,7 +57,7 @@ public class ItemMergeController : IInitializable
         return new MergeRequestResult()
         {
             MergeResultType = MergeResultType.SUCCESS,
-            MergeResultItem = bagItemsProvider.GetBagItemById(recipe.ResultingItem.Id),
+            MergeResultItem = await bagItemsProvider.GetBagItemById(recipe.ResultingItem.Id),
         };
     }
 

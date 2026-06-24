@@ -258,7 +258,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42.95
+  m_fontSize: 8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -314,6 +314,7 @@ GameObject:
   - component: {fileID: 3870414196639020524}
   - component: {fileID: 1451873535238328743}
   - component: {fileID: 3481952800882872620}
+  - component: {fileID: 245910159084143190}
   m_Layer: 5
   m_Name: FoundItem
   m_TagString: Untagged
@@ -400,6 +401,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.5
+--- !u!114 &245910159084143190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7595364972886532471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a7ecf368777dda49b97e5d9edb30bf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Core::FoundItemEntryView
+  itemIcon: {fileID: 7990194548972089284}
+  itemNameLabel: {fileID: 6038323094800639982}
 --- !u!1 &7598711199445469683
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,34 +1,25 @@
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 using Zenject;
 
 public class DeploymentManager
 {
     [Inject]
-    private IBagItemsProvider bagItemsProvider;
+    private DeploymentsNetworkManager networkManager;
 
-    public float GetNextDeploymentDuration()
+    public async UniTask<float> DeployPlayer()
     {
-        return 2.7f;
+        var timeLeft = await networkManager.RequestDeploymentStart();
+        return timeLeft;
     }
 
-    public async UniTask<DeploymentResult> DeployPlayer()
+    public async UniTask<float> GetTimeLeft()
     {
-        await UniTask.WaitForSeconds(GetNextDeploymentDuration());
-        var foundItemsCount = Random.Range(1, 5);
-        var result = new DeploymentResult()
-        {
-            FoundItems = new List<BagItemData>(),
-            UsedEuippedItems = new List<BagItemData>(),
-        };
+        var timeLeft = await networkManager.RequestTimeLeftInSecs();
+        return timeLeft;
+    }
 
-        while (foundItemsCount-- > 0)
-        {
-            // TODO: change to actual gameplay reward logic
-            result.FoundItems.Add(bagItemsProvider.GetBagItemById(Random.Range(0, 5)));
-        }
-
-        return result;
+    public async UniTask<DeploymentResult> GetLastDeployment()
+    {
+        return await networkManager.RequestLastDeployment();
     }
 }

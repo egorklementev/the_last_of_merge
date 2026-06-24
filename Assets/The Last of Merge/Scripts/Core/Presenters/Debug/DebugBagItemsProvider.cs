@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 /// </summary>
 public class DebugBagItemsProvider : IBagItemsProvider
 {
-    public BagItemData GetBagItemById(int id)
+    public async UniTask<BagItemData> GetBagItemById(int id)
     {
         return new() { Id = 0 };
     }
