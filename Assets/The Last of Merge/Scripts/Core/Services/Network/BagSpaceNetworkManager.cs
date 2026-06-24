@@ -57,15 +57,7 @@ public class BagSpaceNetworkManager
 
         await request.SendWebRequest();
 
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            return true;
-        }
-        else
-        {
-            Debug.LogError("Save Inventory Failed: " + request.downloadHandler.text);
-            return false;
-        }
+        return request.result == UnityWebRequest.Result.Success;
     }
 
     private struct InventoryRequestResponse
