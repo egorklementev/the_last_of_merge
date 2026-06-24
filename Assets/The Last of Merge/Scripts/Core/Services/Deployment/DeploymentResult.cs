@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
 
-public struct DeploymentResult
+public class DeploymentResult
 {
-    public float HpDamaged;
-    public float ExpEarned;
-    public IList<BagItemData> FoundItems;
-    public IList<BagItemData> UsedEuippedItems;
+    public DateTime FinishTime { get; set; }
+    public ICollection<int> FoundItems { get; set; }
+    public int ExpFarmed { get; set; }
 }
