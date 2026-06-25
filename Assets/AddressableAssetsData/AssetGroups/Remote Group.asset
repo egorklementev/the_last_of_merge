@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Remote Group
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Remote Group
+  m_GUID: 33bb8cd489b1aa447a980846417b5c94
+  m_SerializeEntries:
+  - m_GUID: 019b2f6aa5253234a85f396cea32150f
+    m_Address: BagItems/SodaCan
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 01ed12569664af14fb7104b6141ee903
+    m_Address: BagItems/DirtyRags
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a096005042ce2d48bbfa7f736adbf62
+    m_Address: MergeRecipes/0002-Bandages
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - merge_recipe
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ece5d819cf777f4bafb5711b2d24da5
+    m_Address: MergeRecipes/0001-MetalScrap
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - merge_recipe
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 420243697e8c57643a8ba89ba64ae1e8
+    m_Address: BagItems/Antiseptic
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47765a7c4dc2f4e439fcc8762b55ceaf
+    m_Address: BagItems/Sticks
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4cbe2b8c2d8a09a4c8cfcbd1055f077c
+    m_Address: Assets/The Last of Merge/Data/BagItems/0008-Bag.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7fdbfe975690d8444aa0e2a4ce74fbb4
+    m_Address: Assets/The Last of Merge/Data/MergeRecipes/0003-Bag.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - merge_recipe
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8bd2e6b9f9c99a843a0eda05f8e27ae0
+    m_Address: BagItems/Bandages
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf069179821cfc948a5cfef16dddf92d
+    m_Address: BagItems/MetalScrap
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d7a011535d3692e4dbd8ac28c789d231
+    m_Address: BagItems/Strings
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fce4a644e0d719d4bb24779292211bfe
+    m_Address: BagItems/ScrapInstrument
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd577a29cb24c9c44aca0dc3eebfe5e5
+    m_Address: MergeRecipes/0000-ScrapInstrument
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - merge_recipe
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 19b063c3d1e41a548af1af9d5c6c845e, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 47592b1572e127246bbdde1613f06cc7, type: 2}
+    - {fileID: 11400000, guid: 99d59ad8af793a94989caad37bda450b, type: 2}

@@ -15,9 +15,10 @@ MonoBehaviour:
   m_DefaultGroup: 35db141b306fb4e4d9c87b1bb6f8ef81
   m_currentHash:
     serializedVersion: 2
-    Hash: 446a22116d4c790dfa0bd89b28537e01
+    Hash: 212b29ea32bb5827537a39dea0450eec
   m_OptimizeCatalogSize: 0
-  m_BuildRemoteCatalog: 0
+  m_BuildRemoteCatalog: 1
+  m_BundleLocalCatalog: 0
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 0
   m_InternalIdNamingMode: 0
@@ -31,7 +32,7 @@ MonoBehaviour:
     m_ClassName: UnityEngine.ResourceManagement.ResourceProviders.AssetBundleProvider
   m_IgnoreUnsupportedFilesInBuild: 0
   m_UniqueBundleIds: 0
-  m_EnableJsonCatalog: 0
+  m_EnableJsonCatalog: 1
   m_NonRecursiveBuilding: 1
   m_AllowNestedBundleFolders: 0
   m_CCDEnabled: 0
@@ -51,15 +52,16 @@ MonoBehaviour:
   m_CheckForContentUpdateRestrictionsOption: 0
   m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
-    m_Id: 
+    m_Id: 2bd2d20222942244b9dbf9470953cca1
   m_RemoteCatalogLoadPath:
-    m_Id: 
-  m_ContentStateBuildPathProfileVariableName: 
+    m_Id: 6485e40c5ec08fd44b9a23de19bba3e2
+  m_ContentStateBuildPathProfileVariableName: <default settings path>
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
+  - {fileID: 11400000, guid: ef7f3d3bcb12b1049bd3e63399d313e4, type: 2}
   - {fileID: 11400000, guid: c87cf4e5ce40a4246a3850d58d3781e6, type: 2}
   m_BuildSettings:
     m_LogResourceManagerExceptions: 1
@@ -77,7 +79,7 @@ MonoBehaviour:
       - m_Id: 58f20eadb7fa5644ba57e0a4132c1a19
         m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
       - m_Id: 6485e40c5ec08fd44b9a23de19bba3e2
-        m_Value: http://localhost:8080
+        m_Value: 'http://api.alherorun.ru/addressables/[BuildTarget]'
       - m_Id: b77f2839dae85e040be4bc5822dfd271
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
     m_ProfileEntryNames:
