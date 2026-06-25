@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 apply from: '../shared/keepUnitySymbols.gradle'
 apply from: '../shared/common.gradle'
 **APPLY_PLUGINS**
@@ -17,7 +17,7 @@ dependencies {
 
 // Android Resolver Exclusions Start
 android {
-  packaging {
+  packagingOptions {
       exclude ('/lib/armeabi/*' + '*')
       exclude ('/lib/armeabi-v7a/*' + '*')
       exclude ('/lib/mips/*' + '*')
@@ -41,7 +41,6 @@ android {
     }
 
     defaultConfig {
-consumerProguardFiles 'proguard-unity.txt'**USER_PROGUARD**
         minSdk **MINSDK**
         targetSdk **TARGETSDK**
         ndk {

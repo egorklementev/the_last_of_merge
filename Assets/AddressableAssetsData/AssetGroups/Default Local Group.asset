@@ -14,73 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
   m_GroupName: Default Local Group
   m_GUID: 35db141b306fb4e4d9c87b1bb6f8ef81
-  m_SerializeEntries:
-  - m_GUID: 019b2f6aa5253234a85f396cea32150f
-    m_Address: BagItems/SodaCan
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - bag_item
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 01ed12569664af14fb7104b6141ee903
-    m_Address: BagItems/DirtyRags
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - bag_item
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3a096005042ce2d48bbfa7f736adbf62
-    m_Address: Assets/The Last of Merge/Data/MergeRecipes/0002-Bandages.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - merge_recipe
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3ece5d819cf777f4bafb5711b2d24da5
-    m_Address: Assets/The Last of Merge/Data/MergeRecipes/0001-MetalScrap.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - merge_recipe
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 420243697e8c57643a8ba89ba64ae1e8
-    m_Address: Assets/The Last of Merge/Data/BagItems/0006-Antiseptic.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - bag_item
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 47765a7c4dc2f4e439fcc8762b55ceaf
-    m_Address: BagItems/Sticks
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - bag_item
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8bd2e6b9f9c99a843a0eda05f8e27ae0
-    m_Address: Assets/The Last of Merge/Data/BagItems/0007-Bandages.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - bag_item
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: bf069179821cfc948a5cfef16dddf92d
-    m_Address: BagItems/MetalScrap
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - bag_item
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d7a011535d3692e4dbd8ac28c789d231
-    m_Address: BagItems/Strings
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - bag_item
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fce4a644e0d719d4bb24779292211bfe
-    m_Address: BagItems/ScrapInstrument
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - bag_item
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fd577a29cb24c9c44aca0dc3eebfe5e5
-    m_Address: MergeRecipes/ScrapInstrument
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - merge_recipe
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 19b063c3d1e41a548af1af9d5c6c845e, type: 2}
   m_SchemaSet:
