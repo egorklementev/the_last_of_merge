@@ -1,5 +1,6 @@
 using System;
 using Zenject;
+using static IItemSlotView;
 
 public class ItemSlot : IInitializable
 {
@@ -22,7 +23,9 @@ public class ItemSlot : IInitializable
 
     public bool IsEmpty() => ItemData == null;
 
-    public bool IsHovered() => SlotView.IsHovered();
+    public bool IsHovered() => SlotView.GetState() == ItemSlotState.HOVERED;
+
+    public bool JustReleased() => SlotView.GetState() == ItemSlotState.RELEASED;
 
     public void SetItem(BagItemData bagItemData)
     {

@@ -44,6 +44,12 @@ public class BagSpacePresenter
             var slot = itemSlots[i];
             slot.Moved += () =>
             {
+                // If two slots are moved at the same time - no action
+                if (itemSlots.Count(s => s.JustReleased()) > 1)
+                {
+                    OnItemMoved(slot, slot).Forget();
+                }
+
                 var targetSlot = itemSlots.SingleOrDefault(s =>
                     s.IsHovered() && s.SlotId != slot.SlotId
                 );

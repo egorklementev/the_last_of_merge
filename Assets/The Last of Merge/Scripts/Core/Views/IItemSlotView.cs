@@ -23,5 +23,15 @@ public interface IItemSlotView
     /// <param name="item">Contains SlotId, so there is info about where to snap.</param>
     public void OnSnapToSlot(bool isSameSlot = false);
 
-    public bool IsHovered();
+    public ItemSlotState GetState();
+
+    public enum ItemSlotState
+    {
+        RESTING,
+        HOVERED,
+        DRAGGING,
+        RELEASED,
+        SNAPPING,
+        MERGING,
+    }
 }

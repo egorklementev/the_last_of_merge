@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
+using static IItemSlotView;
 
 [RequireComponent(typeof(Image))]
 [RequireComponent(typeof(RectTransform))]
@@ -110,7 +111,7 @@ public class ItemSlotView
         state = ItemSlotState.SNAPPING;
     }
 
-    public bool IsHovered() => state == ItemSlotState.HOVERED;
+    public ItemSlotState GetState() => state;
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -188,15 +189,5 @@ public class ItemSlotView
         colorTween.Kill();
         itemIcon.material.renderQueue -= 1;
         itemIcon.color = Color.white;
-    }
-
-    public enum ItemSlotState
-    {
-        RESTING,
-        HOVERED,
-        DRAGGING,
-        RELEASED,
-        SNAPPING,
-        MERGING,
     }
 }
