@@ -22,6 +22,7 @@ public class DeploymentScreenPresenter : IInitializable
     private AuthorizationHandler authorization;
 
     private bool inDeployment = false;
+    private float deployTimeLeft = 0f;
 
     public void Initialize()
     {
@@ -31,19 +32,20 @@ public class DeploymentScreenPresenter : IInitializable
         {
             await UniTask.WaitUntil(() => authorization.Authorized);
 
-            var timeleft = await deploymentManager.GetTimeLeft();
-            if (timeleft == 0f)
+            deployTimeLeft = await deploymentManager.GetTimeLeft();
+            if (deployTimeLeft == 0f)
             {
+                bagSpacePresenter.OnDeploymentFinish();
                 deploymentScreenView.FinishDeployment();
             }
             else
             {
-                OnDeploy().Forget();
+                OnDeploy(true).Forget();
             }
         });
     }
 
-    private async UniTaskVoid OnDeploy()
+    private async UniTaskVoid OnDeploy(bool hasAlreadyStarted = false)
     {
         if (inDeployment)
             return;
@@ -52,15 +54,26 @@ public class DeploymentScreenPresenter : IInitializable
 
         const float overhead = 3f;
 
-        var timeLeft = await deploymentManager.DeployPlayer();
+        var timeLeft = hasAlreadyStarted ? deployTimeLeft : await deploymentManager.DeployPlayer();
         deploymentScreenView.SetInDeployment(timeLeft + overhead);
 
-        await UniTask.WaitForSeconds(timeLeft + overhead); // ATTENTION: a little overhead for the server works
+        if (!hasAlreadyStarted)
+            bagSpacePresenter.ClearEquippedItems(); // TODO: tell the server, what items are being used in a deployment
+
+        bagSpacePresenter.OnDeploymentStart(hasAlreadyStarted);
+
+        // ATTENTION: a little overhead for the server works
+        // I know this is not okay and we need to establish a ask loop
+        // with 3 sec delay for example, but for now KISS
+        await UniTask.WaitForSeconds(timeLeft + overhead);
 
         var deployment = await deploymentManager.GetLastDeployment();
         var bagItems = deployment.FoundItems.Select(id => bagItemsProvider.GetBagItemById(id));
         var items = await UniTask.WhenAll(bagItems);
         deploymentScreenView.SetFoundItems(items);
+        deploymentScreenView.FinishDeployment();
+
+        bagSpacePresenter.OnDeploymentFinish();
 
         foreach (var itemId in deployment.FoundItems)
         {
@@ -75,8 +88,6 @@ public class DeploymentScreenPresenter : IInitializable
             freeSlot.SetItem(item);
             bagSpaceModel.UpdateSlot(freeSlot);
         }
-
-        // TODO: consume equipped items from result
 
         inDeployment = false;
     }

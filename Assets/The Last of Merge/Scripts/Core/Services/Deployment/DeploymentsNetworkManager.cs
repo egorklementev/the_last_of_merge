@@ -22,8 +22,8 @@ public class DeploymentsNetworkManager
         if (request.result == UnityWebRequest.Result.Success)
         {
             string responseText = request.downloadHandler.text;
-            var timeLeft = JsonConvert.DeserializeObject<int>(responseText);
-            return timeLeft / 1000f;
+            var timeLeft = JsonConvert.DeserializeObject<double>(responseText);
+            return (float)timeLeft / 1000f;
         }
         else
         {

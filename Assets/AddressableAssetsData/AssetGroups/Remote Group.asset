@@ -52,13 +52,13 @@ MonoBehaviour:
     - bag_item
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4cbe2b8c2d8a09a4c8cfcbd1055f077c
-    m_Address: Assets/The Last of Merge/Data/BagItems/0008-Bag.asset
+    m_Address: BagItems/Bag
     m_ReadOnly: 0
     m_SerializedLabels:
     - bag_item
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7fdbfe975690d8444aa0e2a4ce74fbb4
-    m_Address: Assets/The Last of Merge/Data/MergeRecipes/0003-Bag.asset
+    m_Address: MergeRecipes/0003-Bag
     m_ReadOnly: 0
     m_SerializedLabels:
     - merge_recipe
@@ -68,6 +68,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ef3f437c2c752c4ebc70e5b0447d45f
+    m_Address: BagItems/MetalCornCan
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - bag_item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99cf5aede7e035b42a7cdbc498a377e4
+    m_Address: MergeRecipes/0004-MetalScrap
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - merge_recipe
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bf069179821cfc948a5cfef16dddf92d
     m_Address: BagItems/MetalScrap

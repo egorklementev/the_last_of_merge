@@ -105,4 +105,25 @@ public class BagSpacePresenter
                 break;
         }
     }
+
+    public void ClearEquippedItems()
+    {
+        foreach (var slot in itemSlots.Where(s => s.IsEquipSlot))
+        {
+            slot.SetEmpty();
+            bagSpaceModel.UpdateSlot(slot);
+        }
+
+        bagSpaceModel.SaveDataToServer().Forget();
+    }
+
+    public void OnDeploymentStart(bool isInstant = false)
+    {
+        bagSpaceView.SetInDeployment(isInstant);
+    }
+
+    public void OnDeploymentFinish(bool isInstant = false)
+    {
+        bagSpaceView.FinishDeployment(isInstant);
+    }
 }

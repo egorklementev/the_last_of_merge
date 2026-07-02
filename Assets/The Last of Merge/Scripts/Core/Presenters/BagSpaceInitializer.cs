@@ -55,6 +55,7 @@ public class BagSpaceInitializer : MonoBehaviour
             var slot = container.Instantiate<ItemSlot>();
             slot.SlotId = slotCounter++;
             slot.SlotView = equipmentSlotViews[i];
+            slot.IsEquipSlot = true;
             slot.Initialize();
 
             equipmentSlotViews[i].ContainingSlot = slot;

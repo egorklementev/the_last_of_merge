@@ -28,7 +28,12 @@ public class ItemSlotView
     [Inject(Id = "main_canvas")]
     private Canvas canvas;
 
+    [Inject(Id = "drag_layer")]
+    private Transform dragLayer;
+
+    private Transform originParent;
     private RectTransform rectTransform;
+    private RectTransform dragLayerRect;
     private Vector2 dragStartPosition;
     private Vector2 clickStartPosition;
     private ItemSlotState state = ItemSlotState.RESTING;
@@ -42,6 +47,8 @@ public class ItemSlotView
         rectTransform = GetComponent<RectTransform>();
         itemIcon = GetComponent<Image>();
         itemIconCanvasGroup = GetComponent<CanvasGroup>();
+        originParent = transform.parent;
+        dragLayerRect = dragLayer.GetComponent<RectTransform>();
 
         itemIcon.material = new Material(itemIcon.material);
 
@@ -134,12 +141,20 @@ public class ItemSlotView
 
         state = ItemSlotState.DRAGGING;
 
-        dragStartPosition = rectTransform.anchoredPosition;
-        clickStartPosition = eventData.position;
-
         itemIconCanvasGroup.blocksRaycasts = false;
 
-        ShowDraggingVisuals();
+        ShowDragStartVisuals();
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            dragLayerRect,
+            eventData.position,
+            canvas.worldCamera,
+            out var localPoint
+        );
+
+        rectTransform.anchoredPosition = localPoint;
+        dragStartPosition = rectTransform.anchoredPosition;
+        clickStartPosition = eventData.position;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -159,7 +174,7 @@ public class ItemSlotView
             return;
 
         state = ItemSlotState.HOVERED;
-        itemIcon.color = Color.black;
+        itemIcon.color = Color.gray6;
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -171,23 +186,26 @@ public class ItemSlotView
         itemIcon.color = Color.white;
     }
 
-    private void ShowDraggingVisuals()
+    private void ShowDragStartVisuals()
     {
-        itemIcon.materialForRendering.renderQueue += 1;
-        colorTween = itemIcon.DOColor(Color.deepPink, .5f);
+        colorTween = itemIcon.DOColor(Color.lightGoldenRod, .5f);
+        rectTransform.SetParent(dragLayer);
+        rectTransform.localScale = .222f * Vector3.one;
     }
 
     private void ShowMergingVisuals()
     {
         colorTween.Kill();
-        itemIcon.material.renderQueue -= 1;
         itemIcon.color = Color.white;
+        rectTransform.SetParent(originParent);
+        rectTransform.localScale = Vector3.one;
     }
 
     private void ShowSnappingVisuals()
     {
         colorTween.Kill();
-        itemIcon.material.renderQueue -= 1;
         itemIcon.color = Color.white;
+        rectTransform.SetParent(originParent);
+        rectTransform.localScale = Vector3.one;
     }
 }

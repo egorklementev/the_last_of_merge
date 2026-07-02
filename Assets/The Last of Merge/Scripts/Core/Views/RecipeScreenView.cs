@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,16 +14,13 @@ public class RecipeScreenView : MonoBehaviour, IRecipeScreenView
     private RecipeListEntryView entryViewPrefab;
 
     [SerializeField]
-    private Image item1Icon;
-
-    [SerializeField]
-    private Image item2Icon;
-
-    [SerializeField]
-    private Image itemResultIcon;
-
-    [SerializeField]
     private TextMeshProUGUI itemTitle;
+
+    [SerializeField]
+    private Transform recipeVariantsHolder;
+
+    [SerializeField]
+    private RecipeVariantEntryView recipeVariantPrefab;
 
     [Inject]
     private IInstantiator instantiator;
@@ -35,26 +33,45 @@ public class RecipeScreenView : MonoBehaviour, IRecipeScreenView
             Destroy((child as Transform).gameObject);
         }
 
-        for (int i = 0; i < recipes.Count; i++)
+        // Convert recipes list to unique item => multiple recipes
+        var itemToRecipes = new Dictionary<BagItemData, List<MergeRecipe>>();
+        var uniqueItems = recipes.Select(r => r.ResultingItem).Distinct();
+        foreach (var item in uniqueItems)
         {
+            itemToRecipes.Add(item, recipes.Where(r => r.ResultingItem.Id == item.Id).ToList());
+        }
+
+        foreach (var kvp in itemToRecipes)
+        {
+            var item = kvp.Key;
+            var recipeList = kvp.Value;
+
             var view = instantiator.InstantiatePrefabForComponent<RecipeListEntryView>(
                 entryViewPrefab,
                 recipeListContent
             );
 
-            var iCopy = i;
-            view.Init(recipes[i].ResultingItem);
+            view.Init(item);
             view.Clicked += () =>
             {
-                item1Icon.color = Color.white;
-                item2Icon.color = Color.white;
-                itemResultIcon.color = Color.white;
+                foreach (var child in recipeVariantsHolder)
+                {
+                    // KISS: if many recipes, change to pooling + canvas group
+                    Destroy((child as Transform).gameObject);
+                }
 
-                var recipe = recipes[iCopy];
-                item1Icon.sprite = recipe.Item1.Sprite;
-                item2Icon.sprite = recipe.Item2.Sprite;
-                itemResultIcon.sprite = recipe.ResultingItem.Sprite;
-                itemTitle.text = $"item_{recipe.ResultingItem.Id}";
+                foreach (var recipe in recipeList)
+                {
+                    var recipeVariant =
+                        instantiator.InstantiatePrefabForComponent<RecipeVariantEntryView>(
+                            recipeVariantPrefab,
+                            recipeVariantsHolder
+                        );
+
+                    recipeVariant.SetRecipe(recipe);
+                }
+
+                itemTitle.text = $"item_{item.Id}";
             };
         }
     }

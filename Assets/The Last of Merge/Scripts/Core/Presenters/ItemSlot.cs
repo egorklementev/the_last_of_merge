@@ -9,6 +9,7 @@ public class ItemSlot : IInitializable
     public int SlotId { get; set; }
     public BagItemData ItemData { get; private set; }
     public IItemSlotView SlotView { get; set; }
+    public bool IsEquipSlot { get; set; }
 
     public void Initialize()
     {
