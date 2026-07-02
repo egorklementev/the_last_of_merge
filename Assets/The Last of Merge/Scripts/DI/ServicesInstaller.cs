@@ -10,6 +10,9 @@ public class ServicesInstaller : MonoInstaller
     private Canvas mainCanvas;
 
     [SerializeField]
+    private Transform itemDragLayer;
+
+    [SerializeField]
     private BagSpaceView bagSpaceView;
 
     [SerializeField]
@@ -29,6 +32,7 @@ public class ServicesInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<Bootstrapper>().FromNew().AsSingle().NonLazy();
 
         Container.Bind<Canvas>().WithId("main_canvas").FromInstance(mainCanvas).AsSingle();
+        Container.Bind<Transform>().WithId("drag_layer").FromInstance(itemDragLayer).AsSingle();
 
         Container.Bind<BagSpaceInitializer>().FromInstance(bagSpaceInitializer).AsSingle();
         Container.Bind<BagSpacePresenter>().FromNew().AsSingle();

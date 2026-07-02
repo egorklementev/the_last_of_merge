@@ -16,4 +16,11 @@ public static class Utils
 
         return result;
     }
+
+    public static void Toggle(this CanvasGroup group, bool isEnabled)
+    {
+        group.alpha = isEnabled ? 1f : 0f;
+        group.blocksRaycasts = isEnabled;
+        group.interactable = isEnabled;
+    }
 }
