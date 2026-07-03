@@ -38,7 +38,7 @@ Material:
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
-    - _Strength: 0
+    - _Strength: 1
     - _UseNoise: 1
     - _UseUIAlphaClip: 0
     m_Colors:

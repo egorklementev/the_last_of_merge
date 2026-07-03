@@ -22,27 +22,36 @@ public class NetworkManager
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
-        await request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
+        try
         {
-            string responseText = request.downloadHandler.text;
-            var response = JsonConvert.DeserializeObject<LoginRequestResponse>(responseText);
+            await request.SendWebRequest();
 
-            AuthToken = response.token;
-
-            PlayerPrefs.SetString("AuthToken", response.token);
-            Debug.Log("Login Success! Token saved.");
-            return new()
+            if (request.result == UnityWebRequest.Result.Success)
             {
-                Success = true,
-                Token = response.token,
-                PlayerId = response.playerId,
-            };
+                string responseText = request.downloadHandler.text;
+                var response = JsonConvert.DeserializeObject<LoginRequestResponse>(responseText);
+
+                AuthToken = response.token;
+
+                PlayerPrefs.SetString("AuthToken", response.token);
+                Debug.Log("Login Success! Token saved.");
+                return new()
+                {
+                    Success = true,
+                    Token = response.token,
+                    PlayerId = response.playerId,
+                };
+            }
+            else
+            {
+                Debug.LogError("Login Failed: " + request.downloadHandler.text);
+
+                return new() { Success = false };
+            }
         }
-        else
+        catch (UnityWebRequestException)
         {
-            Debug.LogError("Login Failed: " + request.downloadHandler.text);
+            Debug.LogError("Login Request Failed: " + request.downloadHandler.text);
 
             return new() { Success = false };
         }
@@ -59,16 +68,15 @@ public class NetworkManager
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
-        await request.SendWebRequest();
+        try
+        {
+            await request.SendWebRequest();
 
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            Debug.Log("Registration Success!");
-            return true;
+            return request.result == UnityWebRequest.Result.Success;
         }
-        else
+        catch (UnityWebRequestException)
         {
-            Debug.LogError("Registration Failed: " + request.downloadHandler.text);
+            Debug.Log("Failed to register!");
             return false;
         }
     }

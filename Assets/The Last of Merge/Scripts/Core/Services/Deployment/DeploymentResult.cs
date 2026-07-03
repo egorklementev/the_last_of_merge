@@ -6,4 +6,5 @@ public class DeploymentResult
     public DateTime FinishTime { get; set; }
     public ICollection<int> FoundItems { get; set; }
     public int ExpFarmed { get; set; }
+    public bool ItemsObtained { get; set; }
 }
