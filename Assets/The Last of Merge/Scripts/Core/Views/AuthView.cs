@@ -33,24 +33,33 @@ public class AuthView : MonoBehaviour, IAuthView
     {
         // TODO: validate locally input field
         LoginClicked?.Invoke(loginInput.text, passwordInput.text);
+        loginInput.interactable = false;
+        passwordInput.interactable = false;
+        loginButton.interactable = false;
+        registerButton.interactable = false;
     }
 
     private void RegisterButtonClicked()
     {
         // TODO: validate locally input field
         RegisterClicked?.Invoke(loginInput.text, passwordInput.text);
+        loginInput.interactable = false;
+        passwordInput.interactable = false;
+        loginButton.interactable = false;
+        registerButton.interactable = false;
     }
 
     public void OnLoginSuccess()
     {
-        mainPanelGroup.interactable = false;
-        mainPanelGroup.blocksRaycasts = false;
-        mainPanelGroup.alpha = 0f;
+        mainPanelGroup.Toggle(false);
     }
 
     public void OnLoginFailure()
     {
-        // TODO:
+        loginInput.interactable = true;
+        passwordInput.interactable = true;
+        loginButton.interactable = true;
+        registerButton.interactable = true;
     }
 
     public void OnRegisterSuccess()
@@ -60,6 +69,9 @@ public class AuthView : MonoBehaviour, IAuthView
 
     public void OnRegisterFailure()
     {
-        // TODO:
+        loginInput.interactable = true;
+        passwordInput.interactable = true;
+        loginButton.interactable = true;
+        registerButton.interactable = true;
     }
 }

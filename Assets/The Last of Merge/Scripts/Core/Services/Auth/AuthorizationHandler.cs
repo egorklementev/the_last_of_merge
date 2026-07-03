@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using Zenject;
 
 public class AuthorizationHandler : IInitializable
@@ -10,6 +11,9 @@ public class AuthorizationHandler : IInitializable
 
     [Inject]
     private NetworkManager networkManager;
+
+    [Inject]
+    private BagSpacePresenter bagSpacePresenter;
 
     public void Initialize()
     {
@@ -26,6 +30,12 @@ public class AuthorizationHandler : IInitializable
             {
                 authView.OnRegisterSuccess();
                 Authorized = true;
+
+                Debug.Log("[AuthorizationHandler]: Registration success!");
+            }
+            else
+            {
+                authView.OnRegisterFailure();
             }
         });
     }
@@ -37,8 +47,15 @@ public class AuthorizationHandler : IInitializable
             var result = await networkManager.SendLoginRequest(login, pass);
             if (result.Success)
             {
-                authView.OnLoginSuccess();
                 Authorized = true;
+                Debug.Log("[AuthorizationHandler]: Login success!");
+
+                await UniTask.WaitUntil(() => bagSpacePresenter.Loaded);
+                authView.OnLoginSuccess();
+            }
+            else
+            {
+                authView.OnLoginFailure();
             }
         });
     }

@@ -73,4 +73,18 @@ public class DeploymentsNetworkManager
 
         return default;
     }
+
+    public async UniTask<bool> RequestItemObtain()
+    {
+        using var request = new UnityWebRequest(
+            $"{NetworkManager.BASE_URL}/deployments/obtain",
+            "POST"
+        );
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Authorization", $"Bearer {networkManager.AuthToken}");
+
+        await request.SendWebRequest();
+
+        return request.result == UnityWebRequest.Result.Success;
+    }
 }

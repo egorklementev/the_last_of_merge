@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using NUnit.Framework;
 using Zenject;
 
 /// <summary>
@@ -8,6 +10,8 @@ using Zenject;
 /// </summary>
 public class BagSpacePresenter
 {
+    public bool Loaded { get; set; } = false;
+
     [Inject]
     private IBagItemsProvider bagItemsProvider;
 
@@ -69,15 +73,20 @@ public class BagSpacePresenter
                 slot.SetEmpty();
             else
                 slot.SetItem(data);
+
+            Loaded = true;
         }
     }
 
-    public ItemSlot GetRandomFreeSlot()
+    public ItemSlot GetRandomFreeSlot(bool inEquip = false)
     {
-        if (itemSlots.Count(slot => slot.IsEmpty()) == 0)
+        bool Selector(ItemSlot slot) =>
+            slot.IsEmpty() && (inEquip && slot.IsEquipSlot || !inEquip && !slot.IsEquipSlot);
+
+        if (itemSlots.Count(Selector) == 0)
             return null;
 
-        return itemSlots.Where(slot => slot.IsEmpty()).GetRandom();
+        return itemSlots.Where(Selector).GetRandom();
     }
 
     private async UniTaskVoid OnItemMoved(ItemSlot movingSlot, ItemSlot restingSlot)

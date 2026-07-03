@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using Zenject;
 
 public class DeploymentScreenPresenter : IInitializable
@@ -31,12 +32,22 @@ public class DeploymentScreenPresenter : IInitializable
         UniTask.Void(async () =>
         {
             await UniTask.WaitUntil(() => authorization.Authorized);
+            await UniTask.WaitUntil(() => bagSpaceModel.Loaded);
 
             deployTimeLeft = await deploymentManager.GetTimeLeft();
-            if (deployTimeLeft == 0f)
+            if (deployTimeLeft == 0f) // Either no deployments, or last one has finished
             {
-                bagSpacePresenter.OnDeploymentFinish();
-                deploymentScreenView.FinishDeployment();
+                var deployment = await deploymentManager.GetLastDeployment();
+
+                if (await deploymentManager.TryToObtainItemsIfAny()) // In case we have not yet get our found items
+                {
+                    Debug.Log("[DeploymentScreenPresenter]: Obtaining found items...");
+                    await PutItemsIntoInventory(deployment);
+                }
+
+                await UpdateFoundItems(deployment);
+                bagSpacePresenter.OnDeploymentFinish(true);
+                deploymentScreenView.FinishDeployment(true);
             }
             else
             {
@@ -62,22 +73,39 @@ public class DeploymentScreenPresenter : IInitializable
 
         bagSpacePresenter.OnDeploymentStart(hasAlreadyStarted);
 
-        // ATTENTION: a little overhead for the server works
+        // ATTENTION: a little overhead for the server works.
         // I know this is not okay and we need to establish a ask loop
         // with 3 sec delay for example, but for now KISS
         await UniTask.WaitForSeconds(timeLeft + overhead);
 
         var deployment = await deploymentManager.GetLastDeployment();
+        await UpdateFoundItems(deployment);
+
+        bagSpacePresenter.OnDeploymentFinish();
+
+        await PutItemsIntoInventory(deployment);
+        await deploymentManager.TryToObtainItemsIfAny(); // Mark items (on backend) as obtained
+        await bagSpaceModel.SaveDataToServer();
+
+        inDeployment = false;
+    }
+
+    private async UniTask UpdateFoundItems(DeploymentResult deployment)
+    {
+        if (deployment == null)
+            return;
+
         var bagItems = deployment.FoundItems.Select(id => bagItemsProvider.GetBagItemById(id));
         var items = await UniTask.WhenAll(bagItems);
         deploymentScreenView.SetFoundItems(items);
         deploymentScreenView.FinishDeployment();
+    }
 
-        bagSpacePresenter.OnDeploymentFinish();
-
+    private async UniTask PutItemsIntoInventory(DeploymentResult deployment)
+    {
         foreach (var itemId in deployment.FoundItems)
         {
-            var freeSlot = bagSpacePresenter.GetRandomFreeSlot();
+            var freeSlot = bagSpacePresenter.GetRandomFreeSlot(true);
             if (freeSlot == null)
                 break;
 
@@ -88,7 +116,5 @@ public class DeploymentScreenPresenter : IInitializable
             freeSlot.SetItem(item);
             bagSpaceModel.UpdateSlot(freeSlot);
         }
-
-        inDeployment = false;
     }
 }

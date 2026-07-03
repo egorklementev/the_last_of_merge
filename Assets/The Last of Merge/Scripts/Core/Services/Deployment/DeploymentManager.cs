@@ -22,4 +22,16 @@ public class DeploymentManager
     {
         return await networkManager.RequestLastDeployment();
     }
+
+    public async UniTask<bool> TryToObtainItemsIfAny()
+    {
+        var deployment = await networkManager.RequestLastDeployment();
+        if (deployment == null)
+            return false;
+
+        if (deployment.ItemsObtained)
+            return false;
+
+        return await networkManager.RequestItemObtain();
+    }
 }
