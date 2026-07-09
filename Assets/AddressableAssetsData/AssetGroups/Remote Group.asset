@@ -93,6 +93,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - bag_item
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd093cf09f0a9374aafa689ad3f4d555
+    m_Address: Notifications/DebugDeployStart
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - notification_template
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fce4a644e0d719d4bb24779292211bfe
     m_Address: BagItems/ScrapInstrument
     m_ReadOnly: 0

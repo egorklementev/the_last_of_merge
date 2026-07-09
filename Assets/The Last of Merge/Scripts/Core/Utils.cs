@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public static class Utils
@@ -10,7 +12,7 @@ public static class Utils
         foreach (var entry in enumerable)
         {
             count++;
-            if (Random.Range(0, count) == 0)
+            if (UnityEngine.Random.Range(0, count) == 0)
                 result = entry;
         }
 
@@ -22,5 +24,28 @@ public static class Utils
         group.alpha = isEnabled ? 1f : 0f;
         group.blocksRaycasts = isEnabled;
         group.interactable = isEnabled;
+    }
+
+    public static void ToggleAnimated(
+        this CanvasGroup group,
+        bool isEnabled,
+        float duration = .444f,
+        Action onComplete = null
+    )
+    {
+        if (isEnabled)
+        {
+            group.blocksRaycasts = isEnabled;
+            group.interactable = isEnabled;
+        }
+
+        group
+            .DOFade(isEnabled ? 1f : 0f, duration)
+            .OnComplete(() =>
+            {
+                group.blocksRaycasts = isEnabled;
+                group.interactable = isEnabled;
+                onComplete?.Invoke();
+            });
     }
 }

@@ -27,6 +27,9 @@ public class ServicesInstaller : MonoInstaller
     [SerializeField]
     private BagSpaceInitializer bagSpaceInitializer;
 
+    [SerializeField]
+    private NotificationContainerView notificationContainerView;
+
     public override void InstallBindings()
     {
         Container.BindInterfacesAndSelfTo<Bootstrapper>().FromNew().AsSingle().NonLazy();
@@ -60,6 +63,13 @@ public class ServicesInstaller : MonoInstaller
         Container
             .BindInterfacesAndSelfTo<DefaultMergeRecipeProvider>()
             .FromNew()
+            .AsSingle()
+            .NonLazy();
+
+        Container.BindInterfacesAndSelfTo<NotificationManager>().FromNew().AsSingle().NonLazy();
+        Container
+            .BindInterfacesAndSelfTo<NotificationContainerView>()
+            .FromInstance(notificationContainerView)
             .AsSingle()
             .NonLazy();
 
