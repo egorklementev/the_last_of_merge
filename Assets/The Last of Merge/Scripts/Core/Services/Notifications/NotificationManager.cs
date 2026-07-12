@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Zenject;
 
@@ -10,7 +11,8 @@ public class NotificationManager : IInitializable
     [Inject]
     private NotificationContainerView containerView;
 
-    private Dictionary<string, Action<object>> actionMap = new();
+    private Dictionary<string, Action<INotificationView>> actionMap = new();
+
     private IList<NotificationData> templates;
 
     public void Initialize()
@@ -28,42 +30,35 @@ public class NotificationManager : IInitializable
     public async UniTask ShowNotification(string notificationId, params object[] args)
     {
         await UniTask.WaitUntil(() => templates != null);
+
         var data = templates.SingleOrDefault(t => t.Id == notificationId);
         if (data == null)
+        {
+            Debug.LogError($"No template with {notificationId} can be found!");
             return;
+        }
 
         await ShowNotification(data, args);
     }
 
     public async UniTask ShowNotification(NotificationData data, params object[] args)
     {
-        // TODO: make sure text is localized
-        var langCode = "en";
-        var localizedText =
-            data.TextKey == "none"
-                ? data.TranslationData.Single(d => d.LanguageCode == langCode).Translation
-                : data.TextKey;
-        // String.Format(...);
-
-        var btnTexts = new List<string>();
-        var btnActs = new List<Action<object>>();
-        foreach (var btnData in data.ButtonData)
-        {
-            btnTexts.Add(btnData.ButtonKey); // TODO: translate this
-            btnActs.Add(actionMap[btnData.ActionId]); // TODO: validate this
-        }
-
-        containerView.ShowNotification(data.Sprite, localizedText, btnTexts, btnActs);
+        await containerView.ShowNotification(data, args);
     }
 
-    public void RegisterNotifyButtonAction(string actionId, Action<object> action) =>
+    public void RegisterNotifyButtonAction(string actionId, Action<INotificationView> action) =>
         actionMap.Add(actionId, action);
 
-    private void DefaultNotificationClose(object param)
+    public Action<INotificationView> GetNotifyButtonAction(string actionId)
     {
-        if (param is not NotificationView view)
-            return;
+        if (!actionMap.ContainsKey(actionId))
+            throw new UnityException($"No '{actionId}' button action found!");
 
+        return actionMap[actionId];
+    }
+
+    private void DefaultNotificationClose(INotificationView view)
+    {
         containerView.CloseNotification(view);
     }
 }

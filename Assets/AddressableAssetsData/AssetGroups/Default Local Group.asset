@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
   m_GroupName: Default Local Group
   m_GUID: 35db141b306fb4e4d9c87b1bb6f8ef81
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 72e36a909acdb7e4192d509c9f4fe49b
+    m_Address: Assets/The Last of Merge/Data/Notifications/BagItemInfo.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - notification_template
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 19b063c3d1e41a548af1af9d5c6c845e, type: 2}
   m_SchemaSet:

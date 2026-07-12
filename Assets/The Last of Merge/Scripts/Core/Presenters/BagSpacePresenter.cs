@@ -27,6 +27,9 @@ public class BagSpacePresenter
     [Inject]
     private BagSpaceModel bagSpaceModel;
 
+    [Inject]
+    private NotificationManager notificationManager;
+
     public async UniTask InitializeAsync()
     {
         var itemDatas = await bagItemsProvider.GetBagItemsAsync();
@@ -65,6 +68,17 @@ public class BagSpacePresenter
                 {
                     OnItemMoved(slot, targetSlot).Forget();
                 }
+            };
+
+            slot.LongPress += () =>
+            {
+                notificationManager
+                    .ShowNotification(
+                        "bagspace_bagitem_info",
+                        $"item_{slot.ItemData.Id}",
+                        slot.ItemData.Sprite
+                    )
+                    .Forget();
             };
 
             await UniTask.WaitUntil(() => bagSpaceModel.Loaded);

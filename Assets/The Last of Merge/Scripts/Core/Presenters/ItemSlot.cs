@@ -5,6 +5,7 @@ using static IItemSlotView;
 public class ItemSlot : IInitializable
 {
     public event Action Moved;
+    public event Action LongPress;
 
     public int SlotId { get; set; }
     public BagItemData ItemData { get; private set; }
@@ -14,6 +15,7 @@ public class ItemSlot : IInitializable
     public void Initialize()
     {
         SlotView.Moved += () => Moved?.Invoke();
+        SlotView.LongPress += () => LongPress?.Invoke();
     }
 
     public void SetEmpty()

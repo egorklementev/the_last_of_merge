@@ -1,6 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
@@ -9,52 +8,35 @@ public class NotificationContainerView : MonoBehaviour
     [SerializeField]
     private CanvasGroup group;
 
-    [SerializeField]
-    private NotificationView viewPrefab;
+    [Inject]
+    private NotificationViewProvider viewProvider;
 
     [Inject]
     private IInstantiator instantiator;
 
-    private List<NotificationView> viewPool = new();
+    private Queue<INotificationView> openedViews = new();
 
-    public void ShowNotification(
-        Sprite sprite,
-        string text,
-        IList<string> buttonTexts,
-        IList<Action<object>> buttonActions
-    )
+    public async UniTask ShowNotification(NotificationData data, params object[] args)
     {
-        if (ShownNotificationsCount() == 0)
-            group.ToggleAnimated(true);
-
-        var view = GetOrCreateNotifyView();
-        view.Initialize(sprite, text, buttonTexts, buttonActions);
-    }
-
-    public void CloseNotification(NotificationView view)
-    {
-        view.Close(() =>
-        {
-            if (ShownNotificationsCount() == 0)
-                group.ToggleAnimated(false);
-        });
-    }
-
-    private NotificationView GetOrCreateNotifyView()
-    {
-        var freeView = viewPool.FirstOrDefault(view => !view.IsShown);
-        if (freeView != null)
-            return freeView;
-
-        var newView = instantiator.InstantiatePrefabForComponent<NotificationView>(
-            viewPrefab,
+        var viewTemplate = viewProvider.GetView(data);
+        var view = instantiator.InstantiatePrefabForComponent<ANotificationView>(
+            viewTemplate,
             transform
         );
 
-        viewPool.Add(newView);
-
-        return newView;
+        view.Initialize(data, args);
+        openedViews.Enqueue(view);
+        group.ToggleAnimated(true);
     }
 
-    private int ShownNotificationsCount() => viewPool.Count(view => view.IsShown);
+    public void CloseNotification(INotificationView view)
+    {
+        view.Close();
+        openedViews.Dequeue();
+
+        if (openedViews.Count == 0)
+        {
+            group.ToggleAnimated(false);
+        }
+    }
 }

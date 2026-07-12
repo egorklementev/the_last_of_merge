@@ -878,10 +878,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3676376681474692368}
-  - component: {fileID: 4283622117335334782}
   - component: {fileID: 792912655131752389}
+  - component: {fileID: 5275602707189293470}
   m_Layer: 5
-  m_Name: Notification
+  m_Name: GenericNotification
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -910,29 +910,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4283622117335334782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7330229656313971244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ba1cbf71e61c974fa9c090737f6815e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Core::NotificationView
-  group: {fileID: 792912655131752389}
-  image: {fileID: 8897812391517657339}
-  textLabel: {fileID: 8980693051871194358}
-  buttons:
-  - {fileID: 3215343357821550787}
-  - {fileID: 663194645225435}
-  - {fileID: 2434795792942527231}
-  buttonLabels:
-  - {fileID: 1739963329068114179}
-  - {fileID: 3341715364741712225}
-  - {fileID: 8669424566089713620}
 --- !u!225 &792912655131752389
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -945,6 +922,29 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &5275602707189293470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7330229656313971244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2626925684c49024ebe6a8c9a0189bbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Core::DefaultNotificationView
+  group: {fileID: 792912655131752389}
+  image: {fileID: 8897812391517657339}
+  textLabel: {fileID: 8980693051871194358}
+  buttons:
+  - {fileID: 3215343357821550787}
+  - {fileID: 663194645225435}
+  - {fileID: 2434795792942527231}
+  buttonLabels:
+  - {fileID: 1739963329068114179}
+  - {fileID: 3341715364741712225}
+  - {fileID: 8669424566089713620}
 --- !u!1 &8207102199649965014
 GameObject:
   m_ObjectHideFlags: 0

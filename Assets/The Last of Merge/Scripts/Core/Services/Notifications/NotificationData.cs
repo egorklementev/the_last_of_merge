@@ -6,6 +6,7 @@ using UnityEngine;
 public class NotificationData : ScriptableObject
 {
     public string Id; // Used for quick search for necessary notification in code
+    public string TemplateId;
     public Sprite Sprite;
     public string TextKey; // If "none", "TranslationData" should be used
     public List<NotificationButtonData> ButtonData;

@@ -15,15 +15,22 @@ public class ItemSlotView
         IDragHandler,
         IPointerEnterHandler,
         IPointerExitHandler,
+        IPointerDownHandler,
+        IPointerUpHandler,
         IItemSlotView
 {
     public event Action Moved;
+    public event Action LongPress;
 
     public ItemSlot ContainingSlot { get; set; }
 
     [SerializeField]
     [Range(0f, 1f)]
     private float dragSmoothTime = 0.1f;
+
+    [SerializeField]
+    [Range(0f, 2f)]
+    private float longPressTime = .5f;
 
     [Inject(Id = "main_canvas")]
     private Canvas canvas;
@@ -41,6 +48,8 @@ public class ItemSlotView
     private Tween dragTween;
     private Tween colorTween;
     private Image itemIcon;
+    private float longPressTimer;
+    private bool pointerIsDown;
 
     void Start()
     {
@@ -60,8 +69,8 @@ public class ItemSlotView
         switch (state)
         {
             case ItemSlotState.RESTING:
-                break;
             case ItemSlotState.DRAGGING:
+            case ItemSlotState.HOVERED:
                 break;
             case ItemSlotState.RELEASED:
                 Moved?.Invoke();
@@ -74,8 +83,19 @@ public class ItemSlotView
                 ShowMergingVisuals();
                 state = ItemSlotState.RESTING; // TODO: wait for the merge animation and then change the state
                 break;
-            case ItemSlotState.HOVERED:
+            case ItemSlotState.LONG_PRESS:
+                LongPress?.Invoke();
+                ShowSnappingVisuals();
+                state = ItemSlotState.RESTING;
                 break;
+        }
+
+        longPressTimer += pointerIsDown ? Time.deltaTime : 0f;
+        if (longPressTimer > longPressTime)
+        {
+            longPressTimer = 0f;
+            pointerIsDown = false; // Reset this so that no duplication occurs
+            state = ItemSlotState.LONG_PRESS;
         }
     }
 
@@ -129,6 +149,9 @@ public class ItemSlotView
         Vector2 canvasDelta = screenDelta / canvas.scaleFactor;
         dragTween.Kill();
         dragTween = rectTransform.DOAnchorPos(dragStartPosition + canvasDelta, dragSmoothTime);
+
+        pointerIsDown = false;
+        longPressTimer = 0f;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -184,6 +207,16 @@ public class ItemSlotView
 
         state = ItemSlotState.RESTING;
         itemIcon.color = Color.white;
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        pointerIsDown = true;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        pointerIsDown = false;
     }
 
     private void ShowDragStartVisuals()

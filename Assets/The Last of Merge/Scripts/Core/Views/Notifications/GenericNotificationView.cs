@@ -1,10 +1,11 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
-public class NotificationView : MonoBehaviour
+public class GenericNotificationView : ANotificationView
 {
     [SerializeField]
     private CanvasGroup group;
@@ -21,15 +22,20 @@ public class NotificationView : MonoBehaviour
     [SerializeField]
     private List<TextMeshProUGUI> buttonLabels;
 
-    public bool IsShown { get; private set; } = false;
+    [Inject]
+    private NotificationManager notificationManager;
 
-    public void Initialize(
-        Sprite sprite,
-        string text,
-        IList<string> buttonTexts,
-        IList<Action<object>> buttonActions
-    )
+    public override void Initialize(NotificationData data, params object[] args)
     {
+        base.Initialize(data, args);
+
+        var sprite = data.Sprite;
+        var text = data.TextKey;
+        var buttonTexts = data.ButtonData.Select(d => d.ButtonKey).ToList();
+        var buttonActions = data
+            .ButtonData.Select(d => notificationManager.GetNotifyButtonAction(d.ActionId))
+            .ToList();
+
         Reset();
 
         var imageAndText = sprite != null && text != string.Empty;
@@ -78,20 +84,14 @@ public class NotificationView : MonoBehaviour
             buttonLabels[i].text = buttonTexts[i];
         }
 
-        IsShown = true;
         group.ToggleAnimated(true);
     }
 
-    public void Close(Action callback = null)
+    public override void Close()
     {
-        group.ToggleAnimated(
-            false,
-            onComplete: () =>
-            {
-                IsShown = false;
-                callback?.Invoke();
-            }
-        );
+        base.Close();
+
+        group.ToggleAnimated(false, onComplete: () => Destroy(gameObject));
     }
 
     private void Reset()

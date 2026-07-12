@@ -8,6 +8,11 @@ public interface IItemSlotView
     public event Action Moved;
 
     /// <summary>
+    /// Fires when a user long presses on this view.
+    /// </summary>
+    public event Action LongPress;
+
+    /// <summary>
     /// Sets (or replaces) an item within this slot.
     /// </summary>
     public void SetItem(BagItemData data);
@@ -33,5 +38,6 @@ public interface IItemSlotView
         RELEASED,
         SNAPPING,
         MERGING,
+        LONG_PRESS,
     }
 }

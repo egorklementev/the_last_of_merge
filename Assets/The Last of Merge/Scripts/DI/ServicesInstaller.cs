@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+using static NotificationViewProvider;
 
 /// <summary>
 /// Performs DI on the main services in the game
@@ -29,6 +31,9 @@ public class ServicesInstaller : MonoInstaller
 
     [SerializeField]
     private NotificationContainerView notificationContainerView;
+
+    [SerializeField]
+    private List<NotificationDataViewMapping> notificationDataViewMappings;
 
     public override void InstallBindings()
     {
@@ -73,11 +78,16 @@ public class ServicesInstaller : MonoInstaller
             .AsSingle()
             .NonLazy();
 
-        // DEBUG
-        //Container.Bind<IBagItemsProvider>().FromInstance(new DebugBagItemsProvider()).AsSingle();
-        //Container
-        //    .Bind<IMergeRecipeProvider>()
-        //    .FromInstance(new DebugMergeRecipeProvider())
-        //    .AsSingle();
+        Container
+            .BindInterfacesAndSelfTo<NotificationViewProvider>()
+            .FromNew()
+            .AsSingle()
+            .NonLazy();
+
+        Container
+            .Bind<List<NotificationDataViewMapping>>()
+            .FromInstance(notificationDataViewMappings)
+            .AsSingle()
+            .NonLazy();
     }
 }

@@ -5727,7 +5727,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Core::NotificationContainerView
   group: {fileID: 1329816215}
-  viewPrefab: {fileID: 4283622117335334782, guid: 4a5e03a83dbf6fe4bae8563d868165f9, type: 3}
 --- !u!1 &1338322933
 GameObject:
   m_ObjectHideFlags: 0
@@ -6729,6 +6728,11 @@ MonoBehaviour:
   authView: {fileID: 1430302316}
   bagSpaceInitializer: {fileID: 593860388}
   notificationContainerView: {fileID: 1329816216}
+  notificationDataViewMappings:
+  - ViewId: generic_view
+    View: {fileID: 5275602707189293470, guid: 4a5e03a83dbf6fe4bae8563d868165f9, type: 3}
+  - ViewId: bagitem_info
+    View: {fileID: 9140717293035327304, guid: f40d21099b53f3d4c9331ddfece19b58, type: 3}
 --- !u!4 &1651641885
 Transform:
   m_ObjectHideFlags: 0
